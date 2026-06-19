@@ -1,0 +1,7 @@
+# Local credentials and framework output
+.env*.local
+.next/
+node_modules/
+
+# Local development logs
+*.log
