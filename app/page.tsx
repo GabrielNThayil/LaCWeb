@@ -116,37 +116,30 @@ const heroCarousel = [
 
 const menuItems = [
   {
-    name: "Cinnanut Latte",
+    name: "House Coffee",
     category: "coffee",
-    price: "INR 220",
-    detail: "A smoky, nutty coffee signature noted by guests.",
+    price: "INR 180",
+    detail: "Freshly brewed house blend with a smooth, balanced taste.",
     image: "/pics/coffee.png"
   },
   {
-    name: "Tiramisu Tub",
-    category: "desserts",
-    price: "INR 260",
-    detail: "Coffee-soaked sponge, rich cream, and a clean cocoa finish.",
-    image: "/pics/Burger Landscape.png"
-  },
-  {
-    name: "French Butter Croissant",
+    name: "Burger",
     category: "brunch",
-    price: "INR 180",
-    detail: "A golden, flaky French-style croissant baked for breakfast service.",
-    image: "/pics/Interior 3.png"
+    price: "INR 290",
+    detail: "Juicy patty with fresh vegetables and house sauce.",
+    image: "/pics/Burger Landscape.png"
   },
   {
     name: "Hot Chocolate",
     category: "drinks",
-    price: "INR 240",
+    price: "INR 220",
     detail: "Rich Belgian chocolate with steamed milk and whipped cream.",
     image: "/pics/Hot Chocolate Landscape.png"
   },
   {
     name: "Korean Bun",
     category: "brunch",
-    price: "INR 290",
+    price: "INR 150",
     detail: "Soft steamed bun with sweet red bean filling.",
     image: "/pics/Korean Bun.png"
   },
@@ -154,21 +147,28 @@ const menuItems = [
     name: "Burnt Basque Cheesecake",
     category: "desserts",
     price: "INR 310",
-    detail: "A deeply caramelized cheesecake listed among house dessert favorites.",
+    detail: "Deeply caramelized top with a molten cream cheese center.",
     image: "/pics/Burnt Basque Cheesecake Landscape.png"
+  },
+  {
+    name: "Tres Leches",
+    category: "desserts",
+    price: "INR 280",
+    detail: "Classic Latin American cake soaked in three kinds of milk.",
+    image: "/pics/Tres Leches.png"
   }
 ];
 
 const specials = [
   {
-    title: "Hot Chocolate",
-    copy: "Rich Belgian chocolate with steamed milk and whipped cream for a cozy afternoon.",
-    image: "/pics/Hot Chocolate Landscape.png"
-  },
-  {
     title: "Burnt Basque Cheesecake",
     copy: "A deeply caramelized cheesecake with a molten cream cheese center.",
-    image: "/pics/Burnt Basque Cheesecake Landscape.png"
+    image: "/pics/Burnt Basqu 2.png"
+  },
+  {
+    title: "Hot Chocolate",
+    copy: "Rich Belgian chocolate with steamed milk and whipped cream.",
+    image: "/pics/Hot Chocolate Landscape.png"
   },
   {
     title: "Tres Leches",
@@ -427,22 +427,22 @@ export default function Home() {
       </AnimatePresence>
 
       <nav
-        className={`fixed left-1/2 top-4 z-50 w-[min(94vw,1180px)] -translate-x-1/2 rounded-full border px-4 py-3 transition-all duration-500 ${
+        className={`fixed left-1/2 top-4 z-50 w-[min(94vw,1180px)] -translate-x-1/2 rounded-full border px-4 py-3 transition-all duration-500 md:hidden lg:flex ${
           scrolled
             ? "border-crown-espresso/25 bg-crown-paper/94 shadow-glow backdrop-blur-2xl"
             : "border-crown-espresso/20 bg-crown-paper/78 shadow-[0_14px_36px_rgba(32,24,15,.10)] backdrop-blur-xl"
         }`}
       >
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex w-full items-center justify-between gap-4">
           <a href="#home" className="flex items-center gap-2">
-            <span className="grid h-9 w-9 place-items-center rounded-full bg-crown-espresso text-crown-honey">
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-crown-espresso text-crown-honey">
               <Crown className="h-5 w-5" />
             </span>
-            <span className="hidden font-display text-2xl font-semibold leading-none sm:inline">
+            <span className="hidden lg:inline font-display text-2xl font-semibold leading-none">
               La Couronne
             </span>
           </a>
-          <div className="hidden items-center gap-1 lg:flex">
+          <div className="hidden lg:flex items-center gap-1">
             {/* Dynamic nav items with auth */}
             {session ? (
               <>
@@ -450,14 +450,14 @@ export default function Home() {
                   <a
                     key={item.label}
                     href={item.href}
-                    className="rounded-full px-4 py-2 text-sm font-semibold text-crown-espresso/90 transition duration-300 hover:bg-white hover:text-crown-ink"
+                    className="rounded-full px-3 py-2 text-sm font-semibold text-crown-espresso/90 transition duration-300 hover:bg-white hover:text-crown-ink"
                   >
                     {item.label}
                   </a>
                 ))}
                 <button
                   onClick={() => signOut()}
-                  className="rounded-full px-4 py-2 text-sm font-semibold text-crown-espresso/90 transition duration-300 hover:bg-white hover:text-crown-ink"
+                  className="rounded-full px-3 py-2 text-sm font-semibold text-crown-espresso/90 transition duration-300 hover:bg-white hover:text-crown-ink"
                 >
                   Sign out
                 </button>
@@ -468,14 +468,14 @@ export default function Home() {
                   <a
                     key={item.label}
                     href={item.href}
-                    className="rounded-full px-4 py-2 text-sm font-semibold text-crown-espresso/90 transition duration-300 hover:bg-white hover:text-crown-ink"
+                    className="rounded-full px-3 py-2 text-sm font-semibold text-crown-espresso/90 transition duration-300 hover:bg-white hover:text-crown-ink"
                   >
                     {item.label}
                   </a>
                 ))}
                 <a
                   href="/auth/signin"
-                  className="rounded-full px-4 py-2 text-sm font-semibold text-crown-espresso/90 transition duration-300 hover:bg-white hover:text-crown-ink"
+                  className="rounded-full px-3 py-2 text-sm font-semibold text-crown-espresso/90 transition duration-300 hover:bg-white hover:text-crown-ink"
                 >
                   Sign in
                 </a>
@@ -495,8 +495,7 @@ export default function Home() {
             href="/events-space-rental"
             className="group inline-flex items-center gap-2 rounded-full bg-crown-espresso px-4 py-2 text-sm font-semibold text-crown-paper shadow-gold transition duration-300 hover:-translate-y-0.5 hover:bg-crown-caramel"
           >
-            <span className="hidden sm:inline">Events & Space Rental</span>
-            <span className="sm:hidden">Events & Space</span>
+            Book Space
             <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
           </a>
         </div>
@@ -1201,7 +1200,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="border-t border-crown-espresso/20 bg-white/32 px-4 pb-28 pt-10 md:pb-10">
+      <footer className="border-t border-crown-espresso/20 bg-white/32 px-4 pb-28 pt-10 md:pb-10 md:pb-10">
         <div className="mx-auto grid max-w-7xl gap-8 text-crown-espresso/88 md:grid-cols-[1.2fr_.8fr_.8fr]">
           <div>
             <div className="flex items-center gap-3">
@@ -1263,25 +1262,6 @@ export default function Home() {
           </div>
         </div>
       </footer>
-
-      <div className="fixed bottom-3 left-3 right-3 z-50 grid grid-cols-4 gap-2 rounded-full border border-crown-espresso/25 bg-crown-paper/96 p-2 shadow-glow backdrop-blur-2xl md:hidden">
-        <a href={business.phoneHref} className="mobile-action">
-          <Phone className="h-4 w-4" />
-          Call
-        </a>
-        <a href="#order" className="mobile-action">
-          <Coffee className="h-4 w-4" />
-          Order
-        </a>
-        <a href="/events-space-rental" className="mobile-action">
-          <CalendarDays className="h-4 w-4" />
-          Events & Space Rental
-        </a>
-        <a href="#private-space" className="mobile-action bg-crown-espresso text-crown-paper">
-          <CalendarDays className="h-4 w-4" />
-          Rent
-        </a>
-      </div>
     </main>
   );
 }

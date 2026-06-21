@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { SessionWrapper } from "./session-provider";
 import CookieConsent from "@/components/CookieConsent";
+import MobileNav from "@/components/MobileNav";
 
 export const metadata: Metadata = {
   title: "La Couronne Cafe Bengaluru | Patisserie, Private Space & Cafe",
@@ -36,6 +37,7 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <body>
         <SessionWrapper>
+          <MobileNav />
           {children}
         </SessionWrapper>
         <CookieConsent />
