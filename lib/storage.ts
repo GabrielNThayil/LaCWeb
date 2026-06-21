@@ -76,16 +76,17 @@ export function getUserById(userId: string): User | undefined {
 }
 
 /**
- * Get user by email
+ * Get user by email (case-insensitive)
  */
 export function getUserByEmail(email: string): User | undefined {
-  return Array.from(users.values()).find(user => user.email === email);
+  const normalizedEmail = email.toLowerCase();
+  return Array.from(users.values()).find(user => user.email.toLowerCase() === normalizedEmail);
 }
 
 /**
  * Create a new user
  */
-export function createUser(userData: Omit<User, 'id' | 'createdAt'>): User {
+export function createUser(userData: Omit<User, 'id' | 'createdAt' | 'lastVisit' | 'visitCount' | 'averageSpend'>): User {
   const id = `user_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
   const now = new Date();
 

@@ -9,12 +9,10 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { getUserOrders, getUserPreferences, updateUserPreferences } from "@/lib/storage";
 import {
   AnimatePresence,
-  motion,
-  useMotionValue,
-  useScroll,
-  useSpring,
-  useTransform
+  motion
 } from "framer-motion";
+import { useScroll } from "framer-motion";
+import { useTransform } from "framer-motion";
 import {
   ArrowRight,
   CalendarDays,
@@ -29,7 +27,6 @@ import {
   Loader2,
   MapPin,
   Moon,
-  Music2,
   Phone,
   Sparkles,
   Star,
@@ -97,27 +94,23 @@ const navItems = [
   { label: "Visit", href: "#visit" }
 ];
 
-const heroImage =
-  "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1800&q=85";
+const heroImage = "/pics/Interior 1.png";
 
 const heroCarousel = [
   {
     eyebrow: "Private bookings",
     title: "INR 3000 / hour",
-    image:
-      "https://images.unsplash.com/photo-1559305616-3f99cd43e353?auto=format&fit=crop&w=1000&q=82"
+    image: "/pics/Xterior1.png"
   },
   {
     eyebrow: "Patisserie mornings",
     title: "French-style bakes",
-    image:
-      "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1000&q=82"
+    image: "/pics/Interior 2.png"
   },
   {
     eyebrow: "Cafe rituals",
     title: "Coffee, softly staged",
-    image:
-      "https://images.unsplash.com/photo-1511081692775-05d0f180a065?auto=format&fit=crop&w=1000&q=82"
+    image: "/pics/coffee.png"
   }
 ];
 
@@ -127,79 +120,70 @@ const menuItems = [
     category: "coffee",
     price: "INR 220",
     detail: "A smoky, nutty coffee signature noted by guests.",
-    image:
-      "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80"
+    image: "/pics/coffee.png"
   },
   {
     name: "Tiramisu Tub",
     category: "desserts",
     price: "INR 260",
     detail: "Coffee-soaked sponge, rich cream, and a clean cocoa finish.",
-    image:
-      "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=900&q=80"
+    image: "/pics/Burger Landscape.png"
   },
   {
     name: "French Butter Croissant",
     category: "brunch",
     price: "INR 180",
     detail: "A golden, flaky French-style croissant baked for breakfast service.",
-    image:
-      "https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=900&q=80"
+    image: "/pics/Interior 3.png"
   },
   {
-    name: "Ruby Rose Elixir",
+    name: "Hot Chocolate",
     category: "drinks",
     price: "INR 240",
-    detail: "A floral non-alcoholic mocktail with a bright cafe-lounge finish.",
-    image:
-      "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=900&q=80"
+    detail: "Rich Belgian chocolate with steamed milk and whipped cream.",
+    image: "/pics/Hot Chocolate Landscape.png"
   },
   {
-    name: "Croissant Sandwich",
+    name: "Korean Bun",
     category: "brunch",
     price: "INR 290",
-    detail: "Buttery croissant with paneer, lettuce, tomato, cucumber, and sauce.",
-    image:
-      "https://images.unsplash.com/photo-1528736235302-52922df5c122?auto=format&fit=crop&w=900&q=80"
+    detail: "Soft steamed bun with sweet red bean filling.",
+    image: "/pics/Korean Bun.png"
   },
   {
     name: "Burnt Basque Cheesecake",
     category: "desserts",
     price: "INR 310",
     detail: "A deeply caramelized cheesecake listed among house dessert favorites.",
-    image:
-      "https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&w=900&q=80"
+    image: "/pics/Burnt Basque Cheesecake Landscape.png"
   }
 ];
 
 const specials = [
   {
-    title: "White Rose Mocha",
-    copy: "White chocolate, rose notes, and espresso for a polished floral coffee ritual.",
-    image:
-      "https://images.unsplash.com/photo-1533777324565-a040eb52fac1?auto=format&fit=crop&w=1100&q=82"
+    title: "Hot Chocolate",
+    copy: "Rich Belgian chocolate with steamed milk and whipped cream for a cozy afternoon.",
+    image: "/pics/Hot Chocolate Landscape.png"
   },
   {
-    title: "Mango Matcha",
-    copy: "Ceremonial-style matcha lifted with mango for a bright Bengaluru afternoon.",
-    image:
-      "https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=1100&q=82"
+    title: "Burnt Basque Cheesecake",
+    copy: "A deeply caramelized cheesecake with a molten cream cheese center.",
+    image: "/pics/Burnt Basque Cheesecake Landscape.png"
   },
   {
-    title: "Almond Croissant",
-    copy: "Roasted almond cream, laminated pastry, and a quiet European bakery mood.",
-    image:
-      "https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?auto=format&fit=crop&w=1100&q=82"
+    title: "Tres Leches",
+    copy: "Classic Latin American cake soaked in three kinds of milk.",
+    image: "/pics/Tres Leches.png"
   }
 ];
 
 const gallery = [
-  "https://images.unsplash.com/photo-1511081692775-05d0f180a065?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1513267048331-5611cad62e41?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80"
+  "/pics/Interior 1.png",
+  "/pics/coffee.png",
+  "/pics/Hot Chocolate Landscape.png",
+  "/pics/Interior 2.png",
+  "/pics/Interior 3.png",
+  "/pics/Xterior1.png"
 ];
 
 const reviews = [
@@ -249,30 +233,20 @@ export default function Home() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [heroSlide, setHeroSlide] = useState(0);
   const { data: session, status: sessionStatus } = useSession();
-  const cursorX = useMotionValue(-100);
-  const cursorY = useMotionValue(-100);
-  const smoothX = useSpring(cursorX, { stiffness: 420, damping: 38 });
-  const smoothY = useSpring(cursorY, { stiffness: 420, damping: 38 });
   const { scrollY } = useScroll();
   const heroY = useTransform(scrollY, [0, 800], [0, 160]);
   const heroScale = useTransform(scrollY, [0, 800], [1, 1.08]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 32);
-    const onMouseMove = (event: MouseEvent) => {
-      cursorX.set(event.clientX - 18);
-      cursorY.set(event.clientY - 18);
-    };
     const timer = window.setTimeout(() => setLoading(false), 1050);
     onScroll();
     window.addEventListener("scroll", onScroll);
-    window.addEventListener("mousemove", onMouseMove);
     return () => {
       window.clearTimeout(timer);
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("mousemove", onMouseMove);
     };
-  }, [cursorX, cursorY]);
+  }, []);
 
   useEffect(() => {
     const savedTheme = window.localStorage.getItem("la-couronne-theme");
@@ -452,11 +426,6 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <motion.div
-        className="cursor-spec pointer-events-none fixed z-[80] hidden md:grid"
-        style={{ x: smoothX, y: smoothY }}
-      />
-
       <nav
         className={`fixed left-1/2 top-4 z-50 w-[min(94vw,1180px)] -translate-x-1/2 rounded-full border px-4 py-3 transition-all duration-500 ${
           scrolled
@@ -533,7 +502,7 @@ export default function Home() {
         </div>
       </nav>
 
-      <section id="home" className="relative min-h-[96vh] overflow-hidden px-4 pt-28">
+      <section id="home" className="relative min-h-[100vh] overflow-hidden px-4 pt-28">
         <motion.div className="absolute inset-0 -z-10" style={{ y: heroY, scale: heroScale }}>
           <Image
             src={heroImage}
@@ -543,198 +512,152 @@ export default function Home() {
             sizes="100vw"
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-crown-paper/55 via-crown-paper/28 to-crown-paper" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_35%,rgba(230,179,37,.34),transparent_30%),radial-gradient(circle_at_80%_25%,rgba(97,72,28,.22),transparent_24%)]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-crown-paper/40 via-crown-paper/20 to-crown-paper/80" />
         </motion.div>
 
-        <div className="mx-auto grid min-h-[78vh] max-w-7xl items-center gap-10 md:grid-cols-[1.1fr_.9fr]">
-      {session ? (
-        <div className="mb-4">
-          <h2 className="font-display text-3xl font-semibold text-crown-ink">
-            Welcome back, {session.user.name}!
-          </h2>
-          <div className="text-crown-espresso/90">
-            {/* Personalized greeting based on time of day, weather simulation, and order history */}
-            <>
-              {/* Time-based greeting */}
-              <p className="mt-2">
-                {(() => {
-                  const hour = new Date().getHours();
-                  if (hour < 12) return 'Good morning';
-                  if (hour < 17) return 'Good afternoon';
-                  return 'Good evening';
-                })()}. Ready for
-                {(() => {
-                  const userId = session.user.id;
-                  const userOrders = getUserOrders(userId);
-                  let favoriteItem = 'your usual';
-
-                  if (userOrders.length > 0) {
-                    // Find most ordered item
-                    const itemCounts: Record<string, number> = {};
-                    userOrders.forEach(order => {
-                      order.items.forEach(item => {
-                        itemCounts[item.name] = (itemCounts[item.name] || 0) + item.quantity;
-                      });
-                    });
-
-                    const maxItem = Object.entries(itemCounts)
-                      .reduce((a, b) => (a[1] > b[1] ? a : b))[0];
-
-                    if (maxItem) {
-                      favoriteItem = maxItem;
-                    }
-                  }
-
-                  return favoriteItem;
-                })()}?
-              </p>
-
-              {/* Weather-based suggestion */}
-              <p className="mt-2">
-                {(() => {
-                  // Simulate weather-based suggestion (in real app, would use weather API)
-                  const isRainy = Math.random() > 0.7; // 30% chance of rain for demo
-                  return isRainy
-                    ? 'Rainy day today. Want something warm?'
-                    : 'Beautiful day for an iced beverage!';
-                })()}
-              </p>
-            </>
-          </div>
-        </div>
-      ) : (
-        <div className="mb-4">
-          <h2 className="font-display text-3xl font-semibold text-crown-ink">
-            Welcome to La Couronne
-          </h2>
-          <p className="text-crown-espresso/90">
-            Sign in for personalized recommendations
-          </p>
-        </div>
-      )}
+        <div className="mx-auto max-w-7xl">
+          {/* Welcome text - moved to corner */}
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.85, delay: 0.15 }}
-            className="max-w-4xl"
+            className="mb-6"
           >
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-crown-espresso/25 bg-white/78 px-4 py-2 text-sm font-semibold text-crown-espresso shadow-[0_10px_28px_rgba(32,24,15,.08)] backdrop-blur-xl">
-              <Music2 className="h-4 w-4 text-crown-gold" />
-              Cunningham Road, Bengaluru | {business.timings}
-            </div>
-            <h1 className="font-display text-6xl font-semibold leading-[0.88] tracking-normal text-crown-ink sm:text-7xl lg:text-9xl">
-              La Couronne Cafe
-            </h1>
-            <p className="mt-7 max-w-2xl text-lg leading-8 text-crown-espresso/95 sm:text-xl">
-              A warm luxury patisserie and cafe in Vasanth Nagar for French-style
-              desserts, crafted beverages, brunch plates, and intimate private
-              gatherings.
-            </p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <a
-                href="#menu"
-                className="group inline-flex items-center justify-center gap-3 rounded-full bg-crown-espresso px-7 py-4 font-semibold text-crown-paper shadow-gold transition duration-300 hover:-translate-y-1 hover:bg-crown-caramel"
-              >
-                Explore Menu
-                <Coffee className="h-5 w-5 transition group-hover:rotate-12" />
+            {session ? (
+              <div className="inline-block rounded-2xl border border-crown-espresso/20 bg-white/85 px-5 py-3 shadow-lg backdrop-blur">
+                <p className="text-sm text-crown-espresso/80">
+                  Welcome back, <span className="font-semibold text-crown-ink">{session.user.name}</span>
+                </p>
+              </div>
+            ) : (
+              <a href="/auth/signin" className="inline-block rounded-full border border-crown-espresso/25 bg-white/78 px-4 py-2 text-sm text-crown-espresso/90 shadow-[0_8px_24px_rgba(32,24,15,.08)] backdrop-blur-xl transition hover:bg-white">
+                Sign in for personalized recommendations →
               </a>
-              <a
-                href="#private-space"
-                className="inline-flex items-center justify-center gap-3 rounded-full border border-crown-espresso/35 bg-white/78 px-7 py-4 font-semibold text-crown-espresso shadow-[0_12px_34px_rgba(32,24,15,.08)] backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:bg-white"
-              >
-                Reserve the Space
-                <CalendarDays className="h-5 w-5" />
-              </a>
-            </div>
-            <div className="mt-8 flex flex-wrap gap-3 text-sm font-semibold text-crown-espresso/95">
-              <span className="rounded-full border border-crown-espresso/15 bg-white/76 px-4 py-2 backdrop-blur">
-                {business.rating} star | {business.googleCount}
-              </span>
-              <span className="rounded-full border border-crown-espresso/15 bg-white/76 px-4 py-2 backdrop-blur">
-                Direct ordering | {business.costForTwo}
-              </span>
-            </div>
+            )}
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.9, delay: 0.35 }}
-            className="hidden md:block"
-          >
-            <div className="noise-panel rounded-[2rem] border border-crown-espresso/20 p-4 shadow-glow backdrop-blur-2xl">
-              <div className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem]">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={heroCarousel[heroSlide].image}
-                    initial={{ opacity: 0, scale: 1.06 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.75, ease: "easeOut" }}
-                    className="absolute inset-0"
-                  >
-                    <Image
-                      src={heroCarousel[heroSlide].image}
-                      alt={heroCarousel[heroSlide].title}
-                      fill
-                      sizes="40vw"
-                      className="object-cover"
-                    />
-                  </motion.div>
-                </AnimatePresence>
-                <div className="absolute bottom-5 left-5 right-5 rounded-3xl border border-crown-espresso/20 bg-crown-paper/90 p-5 shadow-[0_12px_34px_rgba(32,24,15,.16)] backdrop-blur-2xl">
-                  <p className="text-sm uppercase tracking-[0.34em] text-crown-caramel">
-                    {heroCarousel[heroSlide].eyebrow}
-                  </p>
-                  <p className="mt-2 font-display text-3xl font-semibold">
-                    {heroCarousel[heroSlide].title}
-                  </p>
-                  <div className="mt-5 flex items-center justify-between">
-                    <div className="flex gap-2">
-                      {heroCarousel.map((slide, index) => (
+          {/* Main hero content with carousel */}
+          <div className="grid min-h-[75vh] gap-8 lg:grid-cols-[1fr_400px] lg:items-center">
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.85, delay: 0.2 }}
+            >
+              <h1 className="font-display text-5xl font-semibold leading-[0.92] tracking-normal text-crown-ink sm:text-6xl lg:text-8xl">
+                La Couronne Cafe
+              </h1>
+              <p className="mt-5 max-w-xl text-lg leading-8 text-crown-espresso/95 sm:text-xl">
+                A warm luxury patisserie and cafe in Vasanth Nagar for French-style
+                desserts, crafted beverages, and intimate private gatherings.
+              </p>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <a
+                  href="#menu"
+                  className="group inline-flex items-center justify-center gap-3 rounded-full bg-crown-espresso px-7 py-4 font-semibold text-crown-paper shadow-gold transition duration-300 hover:-translate-y-1 hover:bg-crown-caramel"
+                >
+                  Explore Menu
+                  <Coffee className="h-5 w-5 transition group-hover:rotate-12" />
+                </a>
+                <a
+                  href="#private-space"
+                  className="inline-flex items-center justify-center gap-3 rounded-full border border-crown-espresso/35 bg-white/78 px-7 py-4 font-semibold text-crown-espresso shadow-[0_12px_34px_rgba(32,24,15,.08)] backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:bg-white"
+                >
+                  Reserve the Space
+                  <CalendarDays className="h-5 w-5" />
+                </a>
+              </div>
+              <div className="mt-8 flex flex-wrap gap-3 text-sm font-semibold text-crown-espresso/95">
+                <span className="rounded-full border border-crown-espresso/15 bg-white/76 px-4 py-2 backdrop-blur">
+                  {business.rating} star | {business.googleCount}
+                </span>
+                <span className="rounded-full border border-crown-espresso/15 bg-white/76 px-4 py-2 backdrop-blur">
+                  {business.timings}
+                </span>
+                <span className="rounded-full border border-crown-espresso/15 bg-white/76 px-4 py-2 backdrop-blur">
+                  {business.costForTwo}
+                </span>
+              </div>
+            </motion.div>
+
+            {/* Hero carousel - moved up and more prominent */}
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.9, delay: 0.35 }}
+            >
+              <div className="noise-panel rounded-[2rem] border border-crown-espresso/20 p-4 shadow-glow backdrop-blur-2xl">
+                <div className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem]">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={heroCarousel[heroSlide].image}
+                      initial={{ opacity: 0, scale: 1.06 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.75, ease: "easeOut" }}
+                      className="absolute inset-0"
+                    >
+                      <Image
+                        src={heroCarousel[heroSlide].image}
+                        alt={heroCarousel[heroSlide].title}
+                        fill
+                        sizes="400px"
+                        className="object-cover"
+                      />
+                    </motion.div>
+                  </AnimatePresence>
+                  <div className="absolute bottom-5 left-5 right-5 rounded-3xl border border-crown-espresso/20 bg-crown-paper/90 p-5 shadow-[0_12px_34px_rgba(32,24,15,.16)] backdrop-blur-2xl">
+                    <p className="text-sm uppercase tracking-[0.34em] text-crown-caramel">
+                      {heroCarousel[heroSlide].eyebrow}
+                    </p>
+                    <p className="mt-2 font-display text-2xl font-semibold">
+                      {heroCarousel[heroSlide].title}
+                    </p>
+                    <div className="mt-4 flex items-center justify-between">
+                      <div className="flex gap-2">
+                        {heroCarousel.map((slide, index) => (
+                          <button
+                            key={slide.title}
+                            type="button"
+                            onClick={() => setHeroSlide(index)}
+                            aria-label={`Show slide ${index + 1}: ${slide.title}`}
+                            className={`h-2 rounded-full transition-all duration-300 ${
+                              heroSlide === index
+                                ? "w-7 bg-crown-espresso"
+                                : "w-2 bg-crown-gold/45 hover:bg-crown-gold"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      <div className="flex gap-2">
                         <button
-                          key={slide.title}
                           type="button"
-                          onClick={() => setHeroSlide(index)}
-                          aria-label={`Show slide ${index + 1}: ${slide.title}`}
-                          className={`h-2 rounded-full transition-all duration-300 ${
-                            heroSlide === index
-                              ? "w-7 bg-crown-espresso"
-                              : "w-2 bg-crown-gold/45 hover:bg-crown-gold"
-                          }`}
-                        />
-                      ))}
-                    </div>
-                    <div className="flex gap-2">
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setHeroSlide((current) =>
-                            current === 0 ? heroCarousel.length - 1 : current - 1
-                          )
-                        }
-                        aria-label="Previous hero slide"
-                        className="grid h-8 w-8 place-items-center rounded-full border border-crown-espresso/20 text-crown-espresso transition hover:bg-crown-espresso hover:text-crown-paper"
-                      >
-                        <ChevronLeft className="h-4 w-4" />
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setHeroSlide((current) => (current + 1) % heroCarousel.length)
-                        }
-                        aria-label="Next hero slide"
-                        className="grid h-8 w-8 place-items-center rounded-full border border-crown-espresso/20 text-crown-espresso transition hover:bg-crown-espresso hover:text-crown-paper"
-                      >
-                        <ChevronRight className="h-4 w-4" />
-                      </button>
+                          onClick={() =>
+                            setHeroSlide((current) =>
+                              current === 0 ? heroCarousel.length - 1 : current - 1
+                            )
+                          }
+                          aria-label="Previous hero slide"
+                          className="grid h-8 w-8 place-items-center rounded-full border border-crown-espresso/20 text-crown-espresso transition hover:bg-crown-espresso hover:text-crown-paper"
+                        >
+                          <ChevronLeft className="h-4 w-4" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setHeroSlide((current) => (current + 1) % heroCarousel.length)
+                          }
+                          aria-label="Next hero slide"
+                          className="grid h-8 w-8 place-items-center rounded-full border border-crown-espresso/20 text-crown-espresso transition hover:bg-crown-espresso hover:text-crown-paper"
+                        >
+                          <ChevronRight className="h-4 w-4" />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -840,7 +763,7 @@ export default function Home() {
             className="relative aspect-[4/5] overflow-hidden rounded-[2rem] shadow-glow"
           >
             <Image
-              src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=1000&q=82"
+              src="/pics/coffee.png"
               alt="Warm artisan coffee service"
               fill
               sizes="(max-width: 768px) 100vw, 42vw"
@@ -951,7 +874,7 @@ export default function Home() {
       <section id="private-space" className="relative overflow-hidden bg-crown-espresso px-4 py-24 text-crown-paper">
         <div className="absolute inset-0 opacity-25">
           <Image
-            src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1800&q=82"
+            src="/pics/Interior 1.png"
             alt="Premium cafe lounge ambience"
             fill
             sizes="100vw"
@@ -1302,6 +1225,22 @@ export default function Home() {
               </a>
               <a href="#private-space" className="hover:text-crown-espresso">
                 Private space rental
+              </a>
+            </div>
+          </div>
+          <div>
+            <p className="mb-4 text-sm font-bold uppercase tracking-[0.28em] text-crown-gold">
+              Legal
+            </p>
+            <div className="flex flex-col items-start gap-3 text-sm">
+              <a href="/privacy" className="hover:text-crown-espresso">
+                Privacy Policy
+              </a>
+              <a href="/terms" className="hover:text-crown-espresso">
+                Terms of Service
+              </a>
+              <a href="/contact" className="hover:text-crown-espresso">
+                Contact Us
               </a>
             </div>
           </div>

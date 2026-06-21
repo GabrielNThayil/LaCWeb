@@ -20,6 +20,8 @@ import { formatCurrency } from "@/lib/order-catalog";
 import { getUserById } from "@/lib/storage";
 import Link from "next/link";
 
+type BookingStatus = "idle" | "creating" | "paying" | "success" | "error";
+
 const rentalUses = [
   "Birthdays",
   "Workshops",

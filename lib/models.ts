@@ -4,6 +4,8 @@ export interface User {
   id: string;
   name: string;
   email: string;
+  phone?: string;
+  passwordHash?: string;
   createdAt: Date;
   lastVisit: Date;
   visitCount: number;

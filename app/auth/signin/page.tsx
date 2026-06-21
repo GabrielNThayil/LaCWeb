@@ -2,8 +2,11 @@
 
 import { signIn } from "next-auth/react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function SignInPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -22,97 +25,72 @@ export default function SignInPage() {
       });
 
       if (result?.error) {
-        setError(result.error);
-      } else {
-        // Redirect to home on successful sign in
-        window.location.href = "/";
+        setError("Invalid credentials");
+        setLoading(false);
+      } else if (result?.ok) {
+        router.push("/");
+        router.refresh();
       }
-    } catch (err) {
-      setError("An unexpected error occurred");
-    } finally {
+    } catch {
+      setError("Something went wrong");
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-crown-cream px-4 py-12">
-      <div className="w-full max-w-md space-y-6">
-        <div className="text-center">
-          <h1 className="font-display text-4xl font-semibold text-crown-ink">
-            Welcome to La Couronne
+    <div className="min-h-screen flex items-center justify-center bg-[#FAFAF8] px-4">
+      <div className="w-full max-w-sm">
+        <div className="mb-12 text-center">
+          <h1 className="text-2xl font-light tracking-wide text-stone-800 mb-2">
+            La Couronne
           </h1>
-          <p className="text-crown-espresso/90">
-            Sign in to experience personalized service
-          </p>
+          <p className="text-sm text-stone-500">Welcome back</p>
         </div>
 
-        {error && (
-          <div className="rounded-md bg-red-50 px-4 py-3 text-sm font-medium text-red-800">
-            {error}
-          </div>
-        )}
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {error && (
+            <div className="text-sm text-red-600 text-center">
+              {error}
+            </div>
+          )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <label htmlFor="email" className="block text-sm font-medium text-crown-espresso">
-              Email address
-            </label>
+          <div>
             <input
-              id="email"
               type="email"
+              placeholder="Email"
               required
-              className="block w-full rounded-md border border-crown-espresso/20 bg-white px-3 py-2 text-base text-crown-espresso placeholder-crown-espresso/40 focus:outline-none focus:border-crown-espresso focus:ring-2 focus:ring-crown-espresso"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-0 py-3 bg-transparent border-b border-stone-200 text-stone-800 placeholder-stone-400 focus:outline-none focus:border-stone-800 transition-colors text-sm"
             />
           </div>
 
-          <div className="space-y-2">
-            <label htmlFor="password" className="block text-sm font-medium text-crown-espresso">
-              Password
-            </label>
+          <div>
             <input
-              id="password"
               type="password"
+              placeholder="Password"
               required
-              className="block w-full rounded-md border border-crown-espresso/20 bg-white px-3 py-2 text-base text-crown-espresso placeholder-crown-espresso/40 focus:outline-none focus:border-crown-espresso focus:ring-2 focus:ring-crown-espresso"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-0 py-3 bg-transparent border-b border-stone-200 text-stone-800 placeholder-stone-400 focus:outline-none focus:border-stone-800 transition-colors text-sm"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex items-center justify-center gap-2 rounded-md bg-crown-espresso px-4 py-2 text-sm font-medium text-crown-paper hover:bg-crown-caramel transition-colors disabled:opacity-50"
+            className="w-full py-3 mt-6 text-sm text-stone-800 border border-stone-800 hover:bg-stone-800 hover:text-white transition-all disabled:opacity-50"
           >
-            {loading ? (
-              <>
-                <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10" strokeOpacity="0.3" />
-                  <path d="M12 6v6m4-4h6" strokeLinecap="round" />
-                </svg>
-                <span>Signing in...</span>
-              </>
-            ) : (
-              <>
-                <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path d="M12 2l8.49 7.55a1 1 0 01-.5 1.7l-3.89 3.76a1 1 0 01-1.5 0L12 9.09l-4.6 4.5a1 1 0 01-1.5 0l-3.89-3.76a1 1 0 01-.5-1.7l8.49-7.55z" />
-                </svg>
-                <span>Sign in</span>
-              </>
-            )}
+            {loading ? "Signing in..." : "Sign in"}
           </button>
-
-          <div className="text-center text-sm text-crown-espresso/80">
-            <p>
-              Don&apos;t have an account? <span className="text-crown-espresso underline hover:text-crown-ink">Contact us to register</span>
-            </p>
-            <p className="mt-2">
-              For demo purposes, use any email with any password to sign in
-            </p>
-          </div>
         </form>
+
+        <p className="mt-8 text-center text-sm text-stone-500">
+          New?{" "}
+          <Link href="/auth/signup" className="text-stone-800 hover:underline">
+            Create account
+          </Link>
+        </p>
       </div>
     </div>
   );

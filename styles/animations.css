@@ -1,0 +1,43 @@
+/* Container Transitions */
+.container-slide-up {
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+  transform: translateY(0);
+  opacity: 1;
+}
+.container-slide-up.exit {
+  transform: translateY(10px);
+  opacity: 0;
+}
+
+/* Moods Grid Animation */
+.grid-mood-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+.grid-mood-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Recommendation Reveal */
+.recommendation-fade {
+  opacity: 0.5;
+  transform: translateY(10px);
+}
+.recommendation-fade.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.5s ease-out 0.2s;
+}
+
+/* Hover Effects */
+.button-grow {
+  transition: all 0.2s ease;
+}
+.button-grow:hover {
+  transform: scale(1.05);
+}
+.button-grow:not(:hover) {
+  transform: scale(1);
+}

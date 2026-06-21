@@ -2,6 +2,15 @@ import NextAuth from "next-auth";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { getUserByEmail } from "@/lib/storage";
+import crypto from "crypto";
+
+function verifyPassword(storedHash: string, password: string): boolean {
+  const [salt, hash] = storedHash.split(":");
+  if (!salt || !hash) return false;
+
+  const verifyHash = crypto.pbkdf2Sync(password, salt, 100000, 64, "sha512").toString("hex");
+  return crypto.timingSafeEqual(Buffer.from(hash), Buffer.from(verifyHash));
+}
 
 const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
@@ -17,21 +26,25 @@ const authOptions: NextAuthOptions = {
           return null;
         }
 
-        // In a real app, you would verify the password against a database
-        // For this mock, we'll accept any password for known emails
-        const user = getUserByEmail(credentials.email);
+        const user = getUserByEmail(credentials.email.toLowerCase());
 
-        if (user) {
-          // Mock password verification - in real app, compare hashed passwords
-          // For demo purposes, we'll accept any password
-          return {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-          };
+        if (!user) {
+          return null;
         }
 
-        return null;
+        // If user has a password hash, verify it
+        if (user.passwordHash) {
+          const isValid = verifyPassword(user.passwordHash, credentials.password);
+          if (!isValid) {
+            return null;
+          }
+        }
+
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+        };
       }
     })
   ],

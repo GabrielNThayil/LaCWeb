@@ -1,0 +1,29 @@
+/* Cursor Customization */
+html {
+  cursor: default;
+}
+
+/* Default Cursor */
+body {
+  cursor: url('https://cdn.example.com/custom-cursor.svg'), auto;
+}
+
+/* Hover Effects */
+.btn:hover {
+  cursor: url('https://cdn.example.com/grabbing.svg'), auto;
+}
+
+/* Responsive Cursor Adjustments */
+@media (max-width: 768px) {
+  body {
+    cursor: default;
+  }
+  .mood-selector {
+    cursor: pointer;
+  }
+}
+
+/* Loading State */
+.loading {
+  cursor: progress;
+}

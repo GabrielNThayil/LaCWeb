@@ -1,0 +1,41 @@
+/* Custom Cursor Styles */
+
+/* DefaultCursor */
+.cursor-default {
+  cursor: url('assets/cursors/default.svg'), auto;
+}
+
+/* Hover Engagement */
+.cursor-hover {
+  cursor: url('assets/cursors/grabbing.svg'), auto;
+}
+
+/* Interactive Elements */
+.cursor-interactive {
+  cursor: url('assets/cursors/flow.svg'), auto;
+}
+
+/* Loading State */
+.cursor-loading {
+  cursor: progress;
+}
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+  .cursor-default,
+  .cursor-hover,
+  .cursor-interactive {
+    cursor: default !important;
+  }
+  .touch-element {
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+}
+
+/* Accessibility Adjustments */
+.acu-focus {
+  cursor: default;
+  outline: 2px solid var(--crown-espresso);
+  outline-offset: 2px;
+}

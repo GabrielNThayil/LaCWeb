@@ -105,14 +105,38 @@ export default function OrderingModule() {
   } | null>(null);
 
   useEffect(() => {
+    // Load cart from localStorage
     const storedCart = window.localStorage.getItem(storageKey);
+    let loadedCart: Record<string, number> = {};
+
     if (storedCart) {
       try {
-        setCart(JSON.parse(storedCart));
+        loadedCart = JSON.parse(storedCart);
       } catch {
         window.localStorage.removeItem(storageKey);
       }
     }
+
+    // Check for mood-based order from AI recommender
+    const moodOrder = sessionStorage.getItem('moodOrder');
+    if (moodOrder) {
+      try {
+        const orderItems = JSON.parse(moodOrder);
+        // Add each item to cart (match by name)
+        orderItems.forEach((item: { name: string; price: number }) => {
+          const menuItem = orderMenu.find(m => m.name === item.name);
+          if (menuItem) {
+            loadedCart[menuItem.id] = (loadedCart[menuItem.id] || 0) + 1;
+          }
+        });
+        // Clear sessionStorage after loading
+        sessionStorage.removeItem('moodOrder');
+      } catch {
+        sessionStorage.removeItem('moodOrder');
+      }
+    }
+
+    setCart(loadedCart);
   }, []);
 
   useEffect(() => {
@@ -196,7 +220,7 @@ export default function OrderingModule() {
       },
       () => {
         setStatus("error");
-        setMessage("Location was not shared. Porter delivery needs a drop pin.");
+        setMessage("Location was not shared. Borzo delivery needs a drop pin.");
         setIsLocating(false);
       },
       { enableHighAccuracy: true, timeout: 12000 }
@@ -211,7 +235,7 @@ export default function OrderingModule() {
     }
     if (!coordinates) {
       setStatus("error");
-      setMessage("Add your delivery location pin before checking Porter availability.");
+      setMessage("Add your delivery location pin before checking Borzo availability.");
       return;
     }
 
@@ -704,7 +728,7 @@ export default function OrderingModule() {
                         </button>
                         {coordinates && (
                           <p className="sm:col-span-2 text-center text-xs font-semibold text-crown-caramel">
-                            Delivery pin added for Porter serviceability.
+                            Delivery pin added for Borzo serviceability.
                           </p>
                         )}
                         <button
@@ -718,7 +742,7 @@ export default function OrderingModule() {
                           ) : (
                             <Truck className="h-4 w-4" />
                           )}
-                          Check Porter availability
+                          Check Borzo availability
                         </button>
                       </>
                     )}
@@ -797,7 +821,7 @@ export default function OrderingModule() {
             </AnimatePresence>
             <div className="mt-4 flex items-start gap-3 rounded-3xl border border-crown-espresso/16 bg-white/76 p-4 text-sm text-crown-espresso/84">
               <MapPinned className="mt-0.5 h-4 w-4 shrink-0 text-crown-gold" />
-              Bengaluru delivery uses Porter 2W fulfilment after secure payment. A location pin is required to confirm serviceability.
+              Bengaluru delivery uses Borzo 2W fulfilment after secure payment. A location pin is required to confirm serviceability.
             </div>
           </div>
         </div>

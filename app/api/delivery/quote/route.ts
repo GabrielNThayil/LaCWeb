@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { isPorterConfigured, quotePorterDelivery } from "../../../../lib/porter";
+import { isBorzoConfigured, quoteBorzoDelivery } from "../../../../lib/borzo";
 
 export async function POST(request: Request) {
   const body = await request.json();
@@ -13,22 +13,22 @@ export async function POST(request: Request) {
 
   if (!body.coordinates?.latitude || !body.coordinates?.longitude) {
     return NextResponse.json(
-      { error: "Share a delivery location pin to check Porter availability." },
+      { error: "Share a delivery location pin to check Borzo availability." },
       { status: 400 }
     );
   }
 
-  if (!isPorterConfigured()) {
+  if (!isBorzoConfigured()) {
     return NextResponse.json({
       configured: false,
-      provider: "Porter",
+      provider: "Borzo",
       message:
-        "Porter integration is prepared. Delivery will be coordinated by the cafe until enterprise API access is configured."
+        "Borzo integration is prepared. Delivery will be coordinated by the cafe until API access is configured."
     });
   }
 
   try {
-    const quote = await quotePorterDelivery({
+    const quote = await quoteBorzoDelivery({
       customer: {
         name: body.name,
         phone: body.phone,

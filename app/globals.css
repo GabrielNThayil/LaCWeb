@@ -80,29 +80,26 @@ body {
   }
 }
 
-.luxury-cursor {
-  cursor: none;
+/* Croissant Cursor - Desktop Only */
+@media (hover: hover) and (pointer: fine) {
+  .luxury-cursor {
+    cursor: url('/assets/cursors/croissant.svg') 16 16, auto;
+  }
+
+  a, button, [role="button"], .clickable {
+    cursor: url('/assets/cursors/croissant-pointer.svg') 16 16, pointer;
+  }
 }
 
-.cursor-spec {
-  display: grid;
-  height: 2.5rem;
-  width: 2.5rem;
-  place-items: center;
-  border: 2px solid #61481c;
-  border-radius: 9999px;
-  background: rgba(255, 248, 236, 0.84);
-  box-shadow:
-    0 0 0 3px rgba(230, 179, 37, 0.76),
-    0 10px 26px rgba(32, 24, 15, 0.2);
-}
+/* Mobile - disable custom cursor, use pointer */
+@media (max-width: 768px) {
+  .luxury-cursor {
+    cursor: auto;
+  }
 
-.cursor-spec::after {
-  content: "";
-  height: 0.42rem;
-  width: 0.42rem;
-  border-radius: 9999px;
-  background: #61481c;
+  a, button, [role="button"], .clickable {
+    cursor: pointer;
+  }
 }
 
 .premium-link {
@@ -272,24 +269,84 @@ body {
   color: #fff8ec;
 }
 
-.theme-dark .cursor-spec {
-  border-color: #fff8ec;
-  background: rgba(97, 72, 28, 0.92);
-  box-shadow:
-    0 0 0 3px #e6b325,
-    0 12px 28px rgba(0, 0, 0, 0.42);
-}
+/* ========== RESPONSIVE IMPROVEMENTS ========== */
 
-.theme-dark .cursor-spec::after {
-  background: #fff8ec;
-}
-
-@media (max-width: 768px) {
-  .luxury-cursor {
-    cursor: auto;
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  button, a, [role="button"] {
+    -webkit-tap-highlight-color: rgba(230, 179, 37, 0.3);
   }
 
-  .cursor-spec {
-    display: none;
+  .theme-dark button,
+  .theme-dark a,
+  .theme-dark [role="button"] {
+    -webkit-tap-highlight-color: rgba(230, 179, 37, 0.5);
+  }
+}
+
+/* Safe area padding for notched devices */
+@supports (padding: max(0px)) {
+  .pb-safe {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+
+  .pt-safe {
+    padding-top: max(1rem, env(safe-area-inset-top));
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Better text scaling */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Image optimization */
+img {
+  max-width: 100%;
+  height: auto;
+  loading: lazy;
+}
+
+/* Better focus states for accessibility */
+:focus-visible {
+  outline: 2px solid #e6b325;
+  outline-offset: 2px;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(97, 72, 28, 0.25);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(97, 72, 28, 0.45);
+}
+
+/* Smooth scrolling on iOS */
+@supports (-webkit-overflow-scrolling: touch) {
+  body {
+    -webkit-overflow-scrolling: touch;
   }
 }

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { calculateOrderTotal } from "../../../../lib/order-catalog";
-import { isPorterConfigured, quotePorterDelivery } from "../../../../lib/porter";
+import { isBorzoConfigured, quoteBorzoDelivery } from "../../../../lib/borzo";
 import {
   signDispatchPayload,
   type DispatchPayload
@@ -34,7 +34,7 @@ export async function POST(request: Request) {
         !body.customer?.coordinates?.longitude)
     ) {
       return NextResponse.json(
-        { error: "Please share your delivery location pin for Porter fulfilment." },
+        { error: "Please share your delivery location pin for Borzo delivery." },
         { status: 400 }
       );
     }
@@ -50,8 +50,8 @@ export async function POST(request: Request) {
       | { provider: string; fee: number; automated: boolean }
       | undefined;
 
-    if (fulfillment === "delivery" && isPorterConfigured()) {
-      providerQuote = await quotePorterDelivery({
+    if (fulfillment === "delivery" && isBorzoConfigured()) {
+      providerQuote = await quoteBorzoDelivery({
         customer: {
           name: body.customer.name,
           phone: body.customer.phone,
@@ -147,7 +147,7 @@ export async function POST(request: Request) {
       pricing,
       fulfillment,
       delivery: {
-        provider: providerQuote?.provider || "Porter",
+        provider: providerQuote?.provider || "Borzo",
         automated: Boolean(providerQuote)
       },
       dispatchPayload,

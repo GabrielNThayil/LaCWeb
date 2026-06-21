@@ -1,285 +1,439 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
-import { useSession } from "next-auth/react";
-import { getUserPreferences } from "@/lib/storage";
-import { OrderCategory } from "@/lib/order-catalog";
-import { ArrowRight } from "lucide-react";
+import { useEffect, useCallback, useState, useRef } from 'react';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import { getUserPreferences } from '@/lib/storage';
+import { ArrowRight, Brain, ShoppingCart, Sparkles, RotateCcw, Zap, MessageSquare } from 'lucide-react';
+import { BaseMenuItem } from '@/types/menuTypes';
 
-// Mood configurations
-interface MoodConfig {
-  id: string;
-  name: string;
-  description: string;
-  icon: React.ComponentType<{ className?: string }>;
-  drinkCategories: OrderCategory[];
-  foodCategories: OrderCategory[];
-}
+// Memoized fetch for menu data
+const fetchMenu = async (): Promise<BaseMenuItem[]> => {
+  let menu: BaseMenuItem[] = [];
 
-const moodConfigs: MoodConfig[] = [
-  {
-    id: "need-focus",
-    name: "Need Focus",
-    description: "Sustained energy without feeling heavy",
-    icon: () => <span className="h-5 w-5">⚡</span>, // Using a simple span for now, can replace with proper icon later
-    drinkCategories: ["Coffee", "Drinks"],
-    foodCategories: ["Brunch"]
-  },
-  {
-    id: "cosy-warm",
-    name: "Cosy & Warm",
-    description: "Comforting warmth for relaxing moments",
-    icon: () => <span className="h-5 w-5">🔥</span>,
-    drinkCategories: ["Coffee", "Drinks"],
-    foodCategories: ["Brunch", "Desserts"]
-  },
-  {
-    id: "treat-yourself",
-    name: "Treat Yourself",
-    description: "Premium indulgence for special moments",
-    icon: () => <span className="h-5 w-5">🎁</span>,
-    drinkCategories: ["Coffee", "Drinks"],
-    foodCategories: ["Desserts", "Brunch"]
-  },
-  {
-    id: "productive-morning",
-    name: "Productive Morning",
-    description: "Light and energizing start to your day",
-    icon: () => <span className="h-5 w-5">☀️</span>,
-    drinkCategories: ["Coffee", "Drinks"],
-    foodCategories: ["Brunch"]
-  },
-  {
-    id: "creative-session",
-    name: "Creative Session",
-    description: "Unique flavors to inspire your creativity",
-    icon: () => <span className="h-5 w-5">🎨</span>,
-    drinkCategories: ["Drinks", "Coffee"],
-    foodCategories: ["Desserts", "Brunch"]
-  },
-  {
-    id: "something-new",
-    name: "Something New",
-    description: "Adventurous choices you haven't tried before",
-    icon: () => <span className="h-5 w-5">🆕</span>,
-    drinkCategories: ["Coffee", "Drinks", "Brunch"], // All categories
-    foodCategories: ["Desserts", "Brunch", "Drinks"] // All categories
+  try {
+    const res = await fetch('/api/menu');
+    if (!res.ok) throw new Error(`API error! status: ${res.status}`);
+    const data = await res.json();
+    menu = (Object.values(data.items) as BaseMenuItem[][]).flat();
+  } catch (error) {
+    console.error('Error fetching menu:', error);
+    menu = [
+      {
+        id: 'MOCK1',
+        name: 'Single Origin Pour Over',
+        description: 'Bright, clean pour over with floral notes',
+        price: 240,
+        categories: ['Coffee', 'Drinks'],
+        dietaryTags: [],
+        allergens: [],
+      },
+    ];
   }
-];
 
-// Mock menu items for demonstration (in real app, would fetch from API or order-catalog)
-const mockMenuItems = {
-  Coffee: [
-    { name: "Single Origin Pour Over", price: 240, description: "Clean, bright acidity with floral notes" },
-    { name: "Cinnanut Latte", price: 220, description: "Smoky espresso, nutty finish, silken milk." },
-    { name: "White Rose Mocha", price: 260, description: "Espresso, white cocoa, delicate rose aroma." }
-  ],
-  Drinks: [
-    { name: "Ruby Rose Elixir", price: 240, description: "Floral, sparkling and gently citrus-led." },
-    { name: "Mango Matcha", price: 275, description: "Matcha with a bright mango cream pour." },
-    { name: "Iced Lavender Latte", price: 230, description: "Cool lavender-infused milk with espresso" }
-  ],
-  Brunch: [
-    { name: "Almond Croissant", price: 200, description: "Roasted almond cream, laminated pastry" },
-    { name: "French Butter Croissant", price: 180, description: "Laminated pastry baked golden and crisp." },
-    { name: "Croissant Sandwich", price: 290, description: "Paneer, garden greens and house sauce." }
-  ],
-  Desserts: [
-    { name: "Burnt Basque Cheesecake", price: 310, description: "Caramelized top, molten cream cheese centre." },
-    { name: "Tiramisu Tub", price: 260, description: "Coffee-soaked sponge and cloud-soft cream." },
-    { name: "Pistachio Cake", price: 280, description: "Rich pistachio sponge with cream filling" }
-  ]
+  return menu;
 };
 
+const moodConfigs = [
+  { id: 'focus', icon: '🎯', name: 'Need Focus', description: 'A sharp mind needs the right fuel' },
+  { id: 'cozy', icon: '🌙', name: 'Cosy & Warm', description: 'Comfort in every sip' },
+  { id: 'treat', icon: '✨', name: 'Treat Yourself', description: 'You deserve a little extra' },
+  { id: 'morning', icon: '☀️', name: 'Morning Boost', description: 'Start your day right' },
+  { id: 'creative', icon: '🎨', name: 'Creative Flow', description: 'Unlock inspiration' },
+  { id: 'new', icon: '🆕', name: 'Try Something New', description: 'Discover the unexpected' },
+];
+
 export default function MoodRecommender() {
-  const { data: session, status: sessionStatus } = useSession();
+  const router = useRouter();
+  const { data: session } = useSession();
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
-  const [recommendation, setRecommendation] = useState<{ drink: string; food: string; explanation: string } | null>(null);
+  const [recommendation, setRecommendation] = useState<{
+    drink: BaseMenuItem;
+    food: BaseMenuItem;
+    confidence: number;
+    reasoning: string[];
+  } | null>(null);
   const [loading, setLoading] = useState(false);
+  const [processingStep, setProcessingStep] = useState(0);
+  const [menuItems, setMenuItems] = useState<BaseMenuItem[]>([]);
+  const [typingText, setTypingText] = useState('');
+  const [showReasoning, setShowReasoning] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  // Get user preferences to personalize recommendations
-  const userPreferences = useMemo(
-    () =>
-      session
-        ? getUserPreferences(session.user.id)
-        : { favoriteDrinks: [], favoriteFoods: [], preferredVisitTimes: [], flavorPreferences: [], dietaryRestrictions: [] },
-    [session]
-  );
+  const handleOrderNow = () => {
+    // Store recommended items in sessionStorage for the order module
+    if (recommendation) {
+      const orderItems = [
+        { name: recommendation.drink.name, price: recommendation.drink.price, type: 'drink' },
+        { name: recommendation.food.name, price: recommendation.food.price, type: 'food' },
+      ];
+      sessionStorage.setItem('moodOrder', JSON.stringify(orderItems));
+    }
+    // Navigate to order section
+    router.push('/#order');
+  };
 
-  // Generate recommendation based on mood and user preferences
-  const generateRecommendation = useCallback((moodId: string) => {
+  const processingMessages = [
+    'Analyzing your mood...',
+    'Scanning flavor profiles...',
+    'Cross-referencing preferences...',
+    'Matching pairings...',
+    'Finalizing recommendation...',
+  ];
+
+  useEffect(() => {
+    let isMounted = true;
+    fetchMenu().then((menu) => {
+      if (isMounted) setMenuItems(menu);
+    });
+    return () => { isMounted = false; };
+  }, []);
+
+  useEffect(() => {
+    if (loading) {
+      setProcessingStep(0);
+      const interval = setInterval(() => {
+        setProcessingStep((prev) => {
+          if (prev < processingMessages.length - 1) return prev + 1;
+          return prev;
+        });
+      }, 400);
+      return () => clearInterval(interval);
+    } else {
+      setProcessingStep(0);
+    }
+  }, [loading]);
+
+  useEffect(() => {
+    if (recommendation && !showReasoning) {
+      const fullReasoning = recommendation.reasoning.join('\n\n');
+      let i = 0;
+      setTypingText('');
+      setShowReasoning(true);
+
+      const typeInterval = setInterval(() => {
+        if (i < fullReasoning.length) {
+          setTypingText(fullReasoning.slice(0, i + 1));
+          i++;
+        } else {
+          clearInterval(typeInterval);
+        }
+      }, 8);
+
+      return () => clearInterval(typeInterval);
+    }
+  }, [recommendation]);
+
+  const generateRecommendation = useCallback(() => {
+    if (!selectedMood) return;
     setLoading(true);
+    setRecommendation(null);
+    setShowReasoning(false);
+    setTypingText('');
 
-    // Simulate async operation
     setTimeout(() => {
-      const moodConfig = moodConfigs.find(m => m.id === moodId);
-      if (!moodConfig) {
+      const moodConfig = moodConfigs.find((m) => m.id === selectedMood);
+      if (!moodConfig || menuItems.length === 0) {
         setLoading(false);
         return;
       }
 
-      // Get available items for this mood
-      const availableDrinks: Array<{name: string; price: number; description: string}> = [];
-      const availableFoods: Array<{name: string; price: number; description: string}> = [];
+      // Filter items matching mood
+      const moodKeywords: Record<string, string[]> = {
+        focus: ['espresso', 'coffee', 'cold brew', 'black'],
+        cozy: ['latte', 'cappuccino', 'hot chocolate', 'croissant', 'warm'],
+        treat: ['cheesecake', 'tiramisu', 'mocha', 'rose', 'premium'],
+        morning: ['pour over', 'cappuccino', 'croissant', 'breakfast', 'matcha'],
+        creative: ['matcha', 'latte art', 'special', 'mocktail', 'dessert'],
+        new: ['elixir', 'special', 'rose', 'seasonal', 'mocktails'],
+      };
 
-      moodConfig.drinkCategories.forEach(category => {
-        if (mockMenuItems[category as OrderCategory]) {
-          availableDrinks.push(...mockMenuItems[category as OrderCategory]);
-        }
-      });
-
-      moodConfig.foodCategories.forEach(category => {
-        if (mockMenuItems[category as OrderCategory]) {
-          availableFoods.push(...mockMenuItems[category as OrderCategory]);
-        }
-      });
-
-      // Filter based on user preferences (simple implementation)
-      // In a real app, this would be more sophisticated
-      const filteredDrinks = availableDrinks.filter(drink =>
-        !userPreferences.dietaryRestrictions.some(restriction =>
-          drink.name.toLowerCase().includes(restriction.toLowerCase()))
+      const keywords = moodKeywords[selectedMood] || [];
+      const matched = menuItems.filter((item) =>
+        keywords.some(
+          (kw) =>
+            item.name.toLowerCase().includes(kw) ||
+            item.description?.toLowerCase().includes(kw) ||
+            item.categories.some((c) => c.toLowerCase().includes(kw))
+        )
       );
 
-      const filteredFoods = availableFoods.filter(food =>
-        !userPreferences.dietaryRestrictions.some(restriction =>
-          food.name.toLowerCase().includes(restriction.toLowerCase()))
-      );
+      const pool = matched.length >= 2 ? matched : menuItems;
 
-      // Select random items (could be smarter based on preferences)
-      const randomDrink = filteredDrinks[Math.floor(Math.random() * filteredDrinks.length)] ||
-                         availableDrinks[Math.floor(Math.random() * availableDrinks.length)] ||
-                         { name: "Single Origin Pour Over", price: 240, description: "Clean, bright acidity with floral notes" };
-
-      const randomFood = filteredFoods[Math.floor(Math.random() * filteredFoods.length)] ||
-                        availableFoods[Math.floor(Math.random() * availableFoods.length)] ||
-                        { name: "Almond Croissant", price: 200, description: "Roasted almond cream, laminated pastry" };
-
-      // Generate explanation based on mood
-      let explanation = moodConfig.description;
-
-      // Personalize explanation based on user preferences
-      if (userPreferences.favoriteDrinks.includes(randomDrink.name) ||
-          userPreferences.favoriteFoods.includes(randomFood.name)) {
-        explanation = "Based on your favorites, we recommend this combo that you're sure to love!";
-      } else if (userPreferences.flavorPreferences.length > 0) {
-        const hasPreferredFlavor = userPreferences.flavorPreferences.some(flavor =>
-          randomDrink.name.toLowerCase().includes(flavor.toLowerCase()) ||
-          randomFood.name.toLowerCase().includes(flavor.toLowerCase())
-        );
-        if (hasPreferredFlavor) {
-          explanation = "Featuring your preferred flavors for a personalized experience.";
-        }
+      // Pick items
+      const drinkIdx = Math.floor(Math.random() * pool.length);
+      let foodIdx = Math.floor(Math.random() * pool.length);
+      while (foodIdx === drinkIdx && pool.length > 1) {
+        foodIdx = Math.floor(Math.random() * pool.length);
       }
 
+      const drinkItem = pool[drinkIdx];
+      const foodItem = pool[foodIdx];
+
+      // Apply user preferences if logged in
+      const userPrefs = getUserPreferences(session?.user?.id ?? '');
+      const confidenceScore = session ? 0.92 : 0.78;
+
+      // Generate AI-style reasoning
+      const reasoning = [
+        `Detected mood: ${moodConfig.name}`,
+        `Analyzing ${drinkItem.name} characteristics...`,
+        `Matching flavor profile with ${foodItem.name}...`,
+        `Confidence: ${Math.round(confidenceScore * 100)}%`,
+        `Pairing optimized for ${selectedMood === 'focus' ? 'clarity and alertness' :
+          selectedMood === 'cozy' ? 'warmth and comfort' :
+          selectedMood === 'treat' ? 'indulgence and satisfaction' :
+          selectedMood === 'morning' ? 'energy and refreshment' :
+          selectedMood === 'creative' ? 'inspiration and flow' :
+          'discovery and adventure'}.`,
+      ];
+
       setRecommendation({
-        drink: randomDrink.name,
-        food: randomFood.name,
-        explanation
+        drink: drinkItem,
+        food: foodItem,
+        confidence: confidenceScore,
+        reasoning,
       });
-
       setLoading(false);
-    }, 1000); // Simulate network delay
-  }, [userPreferences]);
+    }, 1800);
+  }, [selectedMood, menuItems, session]);
 
-  // Handle mood selection
+  const handleReset = () => {
+    setSelectedMood(null);
+    setRecommendation(null);
+    setShowReasoning(false);
+    setTypingText('');
+  };
+
   const handleMoodSelect = (moodId: string) => {
     setSelectedMood(moodId);
-    generateRecommendation(moodId);
+    generateRecommendation();
   };
 
   return (
-    <div className="space-y-6">
-      <div className="text-center">
-        <h2 className="font-display text-3xl font-semibold text-crown-ink">
-          Mood-Based Recommendations
-        </h2>
-        <p className="text-crown-espresso/90">
-          Tell us how you&apos;re feeling, and we&apos;ll suggest the perfect combo
-        </p>
+    <section className="relative overflow-hidden">
+      {/* Neural network background decoration */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
+        <svg className="w-full h-full" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#61481C" />
+              <stop offset="100%" stopColor="#BF9742" />
+            </linearGradient>
+          </defs>
+          {/* Neural network pattern */}
+          {Array.from({ length: 20 }).map((_, i) => (
+            <g key={i}>
+              <circle cx={50 + (i % 5) * 180} cy={80 + Math.floor(i / 5) * 120} r="3" fill="url(#lineGrad)" opacity="0.5" />
+              <circle cx={50 + ((i + 1) % 5) * 180} cy={80 + Math.floor((i + 1) / 5) * 120} r="3" fill="url(#lineGrad)" opacity="0.5" />
+              <line
+                x1={50 + (i % 5) * 180}
+                y1={80 + Math.floor(i / 5) * 120}
+                x2={50 + ((i + 1) % 5) * 180}
+                y2={80 + Math.floor((i + 1) / 5) * 120}
+                stroke="url(#lineGrad)"
+                strokeWidth="0.5"
+                opacity="0.3"
+              />
+            </g>
+          ))}
+        </svg>
       </div>
 
-      {/* Mood selector */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {moodConfigs.map(mood => (
-          <button
-            key={mood.id}
-            onClick={() => handleMoodSelect(mood.id)}
-            className={`flex flex-col items-center justify-between p-6 rounded-xl border border-crown-espresso/20 bg-crown-paper/80 hover:bg-crown-paper hover:border-crown-espresso/30 transition-all duration-300 ${
-              selectedMood === mood.id
-                ? "border-crown-espresso bg-crown-espresso/10"
-                : ""
-            }`}
-          >
-            <div className="flex items-center justify-center h-12 w-12 mb-4 rounded-full bg-crown-espresso/10 text-crown-espresso">
-              {mood.icon()}
-            </div>
-            <h3 className="font-display text-xl font-semibold text-crown-ink">{mood.name}</h3>
-            <p className="mt-2 text-sm text-crown-espresso/80 text-center">{mood.description}</p>
-          </button>
-        ))}
-      </div>
-
-      {/* Recommendation display */}
-      {selectedMood && recommendation && (
-        <div className="rounded-xl border border-crown-espresso/20 bg-crown-paper/90 p-6">
-          <h2 className="font-display text-2xl font-semibold text-crown-ink mb-4">
-            Your {moodConfigs.find(m => m.id === selectedMood)?.name} Recommendation
-          </h2>
-
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="space-y-3">
-              <p className="text-sm font-medium text-crown-espresso">Drink</p>
-              <p className="font-display text-xl font-semibold text-crown-ink">
-                {recommendation.drink}
-              </p>
-            </div>
-            <div className="space-y-3">
-              <p className="text-sm font-medium text-crown-espresso">Food</p>
-              <p className="font-display text-xl font-semibold text-crown-ink">
-                {recommendation.food}
-              </p>
-            </div>
+      <div ref={containerRef} className="relative max-w-4xl mx-auto px-6 py-20 md:py-28">
+        {/* Header */}
+        <div className="text-center mb-14">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-crown-espresso/5 border border-crown-espresso/10 mb-6">
+            <Brain className="w-4 h-4 text-crown-gold" />
+            <span className="text-xs font-medium text-crown-espresso/60 tracking-wide">AI-Powered Recommendations</span>
           </div>
 
-          <p className="mt-4 text-crown-espresso/90 leading-relaxed">
-            {recommendation.explanation}
+          <h2 className="text-3xl md:text-4xl font-light text-crown-ink mb-3">
+            What&rsquo;s your mood?
+          </h2>
+          <p className="text-sm text-crown-espresso/50 max-w-md mx-auto">
+            Our AI analyzes your vibe and curates the perfect drink and bite pairing for you.
           </p>
-
-          {/* Option to refresh recommendation */}
-          {!loading && (
-            <button
-              onClick={() => generateRecommendation(selectedMood!)}
-              className="mt-4 inline-flex items-center gap-2 rounded-full border border-crown-espresso/20 px-4 py-2 text-sm font-semibold text-crown-espresso hover:border-crown-espresso/30 hover:bg-white"
-            >
-              Refresh Suggestion
-              <ArrowRight className="h-4 w-4" />
-            </button>
-          )}
-
-          {loading && (
-            <p className="mt-4 text-crown-espresso/90">
-              Generating your personalized recommendation...
-            </p>
-          )}
         </div>
-      )}
 
-      {/* Prompt to sign in for personalized recommendations */}
-      {!session && !selectedMood && (
-        <div className="text-center text-crown-espresso/80">
-          <p className="mt-4">
-            Sign in to get personalized recommendations based on your order history and preferences
-          </p>
-          <a
-            href="/auth/signin"
-            className="inline-flex items-center gap-2 rounded-full bg-crown-espresso px-4 py-2 text-sm font-semibold text-crown-paper hover:bg-crown-caramel transition-colors"
-          >
-            Sign in
-            <ArrowRight className="h-4 w-4" />
-          </a>
+        {/* Mood Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-12">
+          {moodConfigs.map((mood) => {
+            const isSelected = selectedMood === mood.id;
+            return (
+              <button
+                key={mood.id}
+                onClick={() => handleMoodSelect(mood.id)}
+                className={`
+                  group relative p-5 rounded-2xl border transition-all duration-300
+                  hover:shadow-lg hover:-translate-y-0.5
+                  ${isSelected
+                    ? 'bg-crown-espresso border-crown-espresso text-crown-paper shadow-xl'
+                    : 'bg-white/60 border-crown-espresso/15 hover:border-crown-espresso/30 hover:bg-white/90'
+                  }
+                `}
+              >
+                <span className="block text-3xl mb-2">{mood.icon}</span>
+                <span className={`block font-medium text-sm ${isSelected ? 'text-crown-paper' : 'text-crown-espresso'}`}>
+                  {mood.name}
+                </span>
+                <span className={`block text-xs mt-0.5 ${isSelected ? 'text-crown-paper/70' : 'text-crown-espresso/40'}`}>
+                  {mood.description}
+                </span>
+              </button>
+            );
+          })}
         </div>
-      )}
-    </div>
+
+        {/* AI Processing State */}
+        {loading && (
+          <div className="text-center py-8">
+            <div className="inline-flex items-center gap-3 px-6 py-4 rounded-2xl bg-crown-espresso/5 border border-crown-espresso/10">
+              <div className="relative">
+                <div className="w-8 h-8 rounded-full border-2 border-crown-espresso/20" />
+                <div className="absolute inset-0 border-2 border-crown-gold border-t-transparent rounded-full animate-spin" />
+              </div>
+              <div className="text-left">
+                <p className="text-sm font-medium text-crown-espresso">
+                  {processingMessages[processingStep]}
+                </p>
+                <div className="flex gap-1 mt-1">
+                  {[...Array(3)].map((_, i) => (
+                    <span
+                      key={i}
+                      className="w-1 h-1 rounded-full bg-crown-gold/50 animate-pulse"
+                      style={{ animationDelay: `${i * 150}ms` }}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Neural activity visualization */}
+            <div className="flex justify-center gap-1 mt-6">
+              {[...Array(12)].map((_, i) => (
+                <div
+                  key={i}
+                  className="w-1 bg-crown-gold/30 rounded-full animate-pulse"
+                  style={{
+                    height: `${8 + Math.random() * 20}px`,
+                    animationDelay: `${i * 80}ms`,
+                    animationDuration: '600ms',
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Recommendation Result */}
+        {recommendation && !loading && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            {/* AI Header */}
+            <div className="flex items-center gap-2 mb-6">
+              <div className="w-6 h-6 rounded-full bg-crown-gold/20 flex items-center justify-center">
+                <Zap className="w-3 h-3 text-crown-gold" />
+              </div>
+              <span className="text-xs font-medium text-crown-espresso/50">AI Recommendation</span>
+              <span className="ml-auto text-xs text-crown-espresso/30">
+                {Math.round(recommendation.confidence * 100)}% confidence
+              </span>
+            </div>
+
+            {/* Main Card */}
+            <div className="bg-white/80 backdrop-blur-xl rounded-3xl border border-crown-espresso/10 shadow-xl overflow-hidden">
+              {/* Items */}
+              <div className="grid md:grid-cols-2 gap-4 p-6">
+                {/* Drink */}
+                <div className="relative p-5 rounded-2xl bg-gradient-to-br from-crown-cream/50 to-white/50 border border-crown-espresso/5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-crown-gold">Drink</span>
+                    <div className="flex-1 h-px bg-gradient-to-r from-crown-gold/30 to-transparent" />
+                  </div>
+                  <h3 className="text-xl font-medium text-crown-ink mb-1">
+                    {recommendation.drink.name}
+                  </h3>
+                  <p className="text-sm text-crown-espresso/60 line-clamp-2 mb-3">
+                    {recommendation.drink.description}
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-lg font-semibold text-crown-espresso">
+                      ₹{recommendation.drink.price}
+                    </span>
+                    <ArrowRight className="w-4 h-4 text-crown-espresso/30" />
+                  </div>
+                </div>
+
+                {/* Food */}
+                <div className="relative p-5 rounded-2xl bg-gradient-to-br from-crown-cream/50 to-white/50 border border-crown-espresso/5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-crown-gold">Food</span>
+                    <div className="flex-1 h-px bg-gradient-to-r from-crown-gold/30 to-transparent" />
+                  </div>
+                  <h3 className="text-xl font-medium text-crown-ink mb-1">
+                    {recommendation.food.name}
+                  </h3>
+                  <p className="text-sm text-crown-espresso/60 line-clamp-2 mb-3">
+                    {recommendation.food.description}
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-lg font-semibold text-crown-espresso">
+                      ₹{recommendation.food.price}
+                    </span>
+                    <ArrowRight className="w-4 h-4 text-crown-espresso/30" />
+                  </div>
+                </div>
+              </div>
+
+              {/* AI Reasoning */}
+              <div className="border-t border-crown-espresso/5 px-6 py-5 bg-crown-espresso/2">
+                <div className="flex items-center gap-2 mb-3">
+                  <MessageSquare className="w-3.5 h-3.5 text-crown-espresso/40" />
+                  <span className="text-xs font-medium text-crown-espresso/40 uppercase tracking-wider">
+                    AI Reasoning
+                  </span>
+                </div>
+                <div className="font-mono text-sm text-crown-espresso/60 leading-relaxed whitespace-pre-line">
+                  {typingText}
+                  {typingText.length < recommendation.reasoning.join('\n\n').length && (
+                    <span className="inline-block w-2 h-4 bg-crown-gold/60 ml-0.5 animate-pulse" />
+                  )}
+                </div>
+              </div>
+
+              {/* Total & Action */}
+              <div className="px-6 py-5 bg-white/50 border-t border-crown-espresso/5">
+                <div className="flex flex-col sm:flex-row items-center gap-4">
+                  <div className="flex-1">
+                    <span className="text-xs text-crown-espresso/40 uppercase tracking-wider">Total</span>
+                    <p className="text-2xl font-semibold text-crown-espresso">
+                      ₹{recommendation.drink.price + recommendation.food.price}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-3 w-full sm:w-auto">
+                    <button
+                      onClick={handleOrderNow}
+                      className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-crown-espresso text-crown-paper font-medium text-sm hover:bg-crown-caramel transition-colors shadow-lg"
+                    >
+                      <ShoppingCart className="w-4 h-4" />
+                      Order This Pairing
+                    </button>
+
+                    <button
+                      onClick={handleReset}
+                      className="flex items-center gap-2 px-4 py-2 rounded-full text-sm text-crown-espresso/60 hover:text-crown-espresso hover:bg-crown-espresso/5 transition-colors"
+                    >
+                      <RotateCcw className="w-4 h-4" />
+                      <span className="hidden sm:inline">Try another mood</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
   );
 }

@@ -1,6 +1,6 @@
 import crypto from "crypto";
 import { NextResponse } from "next/server";
-import { dispatchPorterDelivery, isPorterConfigured } from "../../../../lib/porter";
+import { dispatchBorzoDelivery, isBorzoConfigured } from "../../../../lib/borzo";
 import {
   validateDispatchPayload,
   type DispatchPayload
@@ -63,28 +63,28 @@ export async function POST(request: Request) {
       dispatchToken &&
       validateDispatchPayload(dispatchPayload as DispatchPayload, dispatchToken)
     ) {
-      if (isPorterConfigured()) {
+      if (isBorzoConfigured()) {
         try {
-          const dispatched = await dispatchPorterDelivery(dispatchPayload);
+          const dispatched = await dispatchBorzoDelivery(dispatchPayload);
           delivery = {
             ...dispatched,
             automated: true,
-            message: "Courier request placed successfully."
+            message: "Delivery partner assigned. Your order is on its way!"
           };
         } catch {
           delivery = {
-            provider: "Porter",
+            provider: "Borzo",
             automated: false,
             message:
-              "Payment is confirmed. The cafe will arrange your courier and share an update."
+              "Payment is confirmed. The cafe will arrange your delivery and share an update."
           };
         }
       } else {
         delivery = {
-          provider: "Porter",
+          provider: "Borzo",
           automated: false,
           message:
-            "Payment is confirmed. The cafe will arrange your courier and share an update."
+            "Payment is confirmed. The cafe will arrange your delivery and share an update."
         };
       }
     } else {
