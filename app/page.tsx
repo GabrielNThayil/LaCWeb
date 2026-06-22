@@ -1264,7 +1264,9 @@ export default function Home() {
             </p>
             <div className="flex items-center gap-3">
               <a
-                href="#home"
+                href="https://www.instagram.com/lacouronneindia/?hl=en"
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label="Instagram"
                 className="grid h-11 w-11 place-items-center rounded-full border border-crown-espresso/20 bg-white/72 transition hover:-translate-y-1 hover:bg-white"
               >
