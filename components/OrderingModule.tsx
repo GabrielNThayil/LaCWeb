@@ -30,6 +30,7 @@ import {
   type OrderCategory
 } from "../lib/order-catalog";
 import { getUserPreferences, updateUserPreferences } from "@/lib/storage";
+import { PLACEHOLDERS } from "@/lib/blurs";
 
 type Fulfillment = "delivery" | "pickup";
 type CheckoutStatus = "idle" | "creating" | "paying" | "success" | "error";
@@ -467,6 +468,8 @@ export default function OrderingModule() {
                         src={item.image}
                         alt={item.name}
                         fill
+                        placeholder="blur"
+                        blurDataURL={PLACEHOLDERS.paper}
                         sizes="(max-width: 640px) 40vw, 22vw"
                         className="object-cover transition duration-700 group-hover:scale-105"
                       />

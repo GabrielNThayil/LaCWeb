@@ -7,9 +7,11 @@ import OrderingModule from "../components/OrderingModule";
 import MoodRecommender from "../components/MoodRecommender";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { getUserOrders, getUserPreferences, updateUserPreferences } from "@/lib/storage";
+import { PLACEHOLDERS } from "@/lib/blurs";
 import {
   AnimatePresence,
-  motion
+  motion,
+  useReducedMotion,
 } from "framer-motion";
 import { useScroll } from "framer-motion";
 import { useTransform } from "framer-motion";
@@ -233,9 +235,10 @@ export default function Home() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [heroSlide, setHeroSlide] = useState(0);
   const { data: session, status: sessionStatus } = useSession();
+  const prefersReducedMotion = useReducedMotion();
   const { scrollY } = useScroll();
-  const heroY = useTransform(scrollY, [0, 800], [0, 160]);
-  const heroScale = useTransform(scrollY, [0, 800], [1, 1.08]);
+  const heroY = useTransform(scrollY, [0, 800], [0, prefersReducedMotion ? 0 : 160]);
+  const heroScale = useTransform(scrollY, [0, 800], [1, prefersReducedMotion ? 1 : 1.08]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 32);
@@ -508,6 +511,8 @@ export default function Home() {
             alt="Elegant cafe interior with warm light"
             fill
             priority
+            placeholder="blur"
+            blurDataURL={PLACEHOLDERS.paper}
             sizes="100vw"
             className="object-cover"
           />
@@ -599,6 +604,8 @@ export default function Home() {
                         src={heroCarousel[heroSlide].image}
                         alt={heroCarousel[heroSlide].title}
                         fill
+                        placeholder="blur"
+                        blurDataURL={PLACEHOLDERS.paper}
                         sizes="400px"
                         className="object-cover"
                       />
@@ -660,11 +667,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="masked-fade border-y border-crown-gold/20 bg-crown-espresso py-4 text-crown-paper">
+      <section className="masked-fade border-y border-crown-gold/20 bg-crown-espresso py-4 text-crown-paper overflow-hidden">
         <motion.div
           className="flex min-w-max gap-10 text-sm font-semibold uppercase tracking-[0.38em]"
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ repeat: Infinity, duration: 24, ease: "linear" }}
+          animate={prefersReducedMotion ? {} : { x: ["0%", "-50%"] }}
+          transition={prefersReducedMotion ? { duration: 0 } : { repeat: Infinity, duration: 24, ease: "linear" }}
         >
           {[...Array(2)].map((_, loop) => (
             <div key={loop} className="flex gap-10">
@@ -717,6 +724,8 @@ export default function Home() {
                     src={item.image}
                     alt={item.name}
                     fill
+                    placeholder="blur"
+                    blurDataURL={PLACEHOLDERS.paper}
                     sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-cover transition duration-700 group-hover:scale-110"
                   />
@@ -765,6 +774,8 @@ export default function Home() {
               src="/pics/coffee.png"
               alt="Warm artisan coffee service"
               fill
+              placeholder="blur"
+              blurDataURL={PLACEHOLDERS.cream}
               sizes="(max-width: 768px) 100vw, 42vw"
               className="object-cover"
             />
@@ -820,6 +831,8 @@ export default function Home() {
                 src={specials[specialIndex].image}
                 alt={specials[specialIndex].title}
                 fill
+                placeholder="blur"
+                blurDataURL={PLACEHOLDERS.espresso}
                 sizes="(max-width: 768px) 100vw, 62vw"
                 className="object-cover"
               />
@@ -876,6 +889,8 @@ export default function Home() {
             src="/pics/Interior 1.png"
             alt="Premium cafe lounge ambience"
             fill
+            placeholder="blur"
+            blurDataURL={PLACEHOLDERS.espresso}
             sizes="100vw"
             className="object-cover"
           />
