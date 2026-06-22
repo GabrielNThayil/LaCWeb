@@ -6,6 +6,7 @@ export interface User {
   email: string;
   phone?: string;
   passwordHash?: string;
+  role?: 'admin' | 'user';
   createdAt: Date;
   lastVisit: Date;
   visitCount: number;
@@ -42,4 +43,47 @@ export interface UserOrder {
   date: Date;
   type: 'delivery' | 'pickup' | 'private_space';
   status: 'confirmed' | 'completed' | 'cancelled';
+}
+
+export type OrderStatus = 'new' | 'preparing' | 'out_for_delivery' | 'ready' | 'delivered' | 'completed' | 'cancelled';
+export type DeliveryStatus = 'pending' | 'assigned' | 'picked_up' | 'delivered';
+
+export interface AdminOrder {
+  id: string;
+  confirmationId: string;
+  razorpayOrderId: string;
+  razorpayPaymentId: string;
+  customerName: string;
+  customerPhone: string;
+  customerEmail?: string;
+  customerAddress?: string;
+  customerLandmark?: string;
+  fulfillment: 'delivery' | 'pickup';
+  timing: string;
+  instructions?: string;
+  items: {
+    name: string;
+    quantity: number;
+    price: number;
+  }[];
+  subtotal: number;
+  packagingFee: number;
+  deliveryFee: number;
+  total: number;
+  paymentAmount: number;
+  status: OrderStatus;
+  deliveryStatus?: DeliveryStatus;
+  deliveryPartner?: string;
+  trackingUrl?: string | null;
+  borzoOrderId?: string | null;
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AdminStats {
+  todayOrders: number;
+  todayRevenue: number;
+  pendingDeliveries: number;
+  avgOrderValue: number;
 }

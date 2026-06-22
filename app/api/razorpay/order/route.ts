@@ -1,10 +1,38 @@
 import { NextResponse } from "next/server";
+import { rateLimitOrder } from "@/lib/rate-limit";
 
 const RENTAL_RATE = 3000;
 const MAX_HOURS = 2;
 
+function getClientIp(request: Request): string {
+  return (
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    request.headers.get("x-real-ip") ??
+    "unknown"
+  );
+}
+
 export async function POST(request: Request) {
-  const body = await request.json();
+  // ── Rate limit ───────────────────────────────────────────────────────────
+  const ip = getClientIp(request);
+  const { allowed, retryAfterMs } = rateLimitOrder(ip);
+  if (!allowed) {
+    return NextResponse.json(
+      { error: "Too many booking requests. Please wait a moment." },
+      {
+        status: 429,
+        headers: { "Retry-After": String(Math.ceil(retryAfterMs / 1000)) },
+      }
+    );
+  }
+
+  let body: Record<string, any>;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
+  }
+
   const hours = Number(body.hours);
 
   if (!Number.isInteger(hours) || hours < 1 || hours > MAX_HOURS) {
@@ -14,7 +42,9 @@ export async function POST(request: Request) {
     );
   }
 
-  if (!body.name || !body.phone || !body.date || !body.slot || !body.eventType) {
+  const requiredFields = ["name", "phone", "date", "slot", "eventType"] as const;
+  const missing = requiredFields.filter((f) => !body[f]?.toString().trim());
+  if (missing.length) {
     return NextResponse.json(
       { error: "Please complete all booking details before checkout." },
       { status: 400 }
@@ -27,10 +57,7 @@ export async function POST(request: Request) {
 
   if (!keyId || !keySecret || !publicKey) {
     return NextResponse.json(
-      {
-        error:
-          "Razorpay keys are not configured. Add RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET, and NEXT_PUBLIC_RAZORPAY_KEY_ID."
-      },
+      { error: "Payment is not configured. Contact the cafe." },
       { status: 500 }
     );
   }
@@ -50,12 +77,12 @@ export async function POST(request: Request) {
       currency: "INR",
       receipt,
       notes: {
-        name: body.name,
-        phone: body.phone,
-        date: body.date,
-        slot: body.slot,
+        name: String(body.name).slice(0, 80),
+        phone: String(body.phone).slice(0, 20),
+        date: String(body.date).slice(0, 20),
+        slot: String(body.slot).slice(0, 10),
         hours: String(hours),
-        eventType: body.eventType
+        eventType: String(body.eventType).slice(0, 40)
       }
     })
   });
@@ -64,7 +91,7 @@ export async function POST(request: Request) {
 
   if (!response.ok) {
     return NextResponse.json(
-      { error: order.error?.description || "Razorpay order creation failed." },
+      { error: "Payment order creation failed. Please try again." },
       { status: response.status }
     );
   }

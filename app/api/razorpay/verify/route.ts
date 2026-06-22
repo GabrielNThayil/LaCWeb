@@ -2,21 +2,27 @@ import crypto from "crypto";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-  const body = await request.json();
   const keySecret = process.env.RAZORPAY_KEY_SECRET;
 
   if (!keySecret) {
     return NextResponse.json(
-      { error: "Razorpay verification secret is not configured." },
+      { error: "Payment verification is not configured." },
       { status: 500 }
     );
+  }
+
+  let body: { razorpay_order_id?: string; razorpay_payment_id?: string; razorpay_signature?: string };
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
   const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = body;
 
   if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
     return NextResponse.json(
-      { error: "Missing Razorpay payment verification fields." },
+      { error: "Missing payment verification fields." },
       { status: 400 }
     );
   }

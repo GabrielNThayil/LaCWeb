@@ -1,19 +1,18 @@
 import NextAuth from "next-auth";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { getUserByEmail } from "@/lib/storage";
+import { getUserByEmail, getUserById } from "@/lib/storage";
+import { checkRateLimit } from "@/lib/rate-limit";
 import crypto from "crypto";
 
 function verifyPassword(storedHash: string, password: string): boolean {
   const [salt, hash] = storedHash.split(":");
   if (!salt || !hash) return false;
-
   const verifyHash = crypto.pbkdf2Sync(password, salt, 100000, 64, "sha512").toString("hex");
   return crypto.timingSafeEqual(Buffer.from(hash), Buffer.from(verifyHash));
 }
 
 const authOptions: NextAuthOptions = {
-  // Configure one or more authentication providers
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -21,21 +20,27 @@ const authOptions: NextAuthOptions = {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" }
       },
-      async authorize(credentials) {
+      async authorize(credentials, req) {
+        const ip =
+          req?.headers?.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+          req?.headers?.get("x-real-ip") ??
+          "unknown";
+
+        // Rate limit: 10 login attempts per minute per IP
+        const allowed = checkRateLimit(`nextauth:${ip}`, 10, 60_000);
+        if (!allowed.allowed) {
+          throw new Error("RL");
+        }
+
         if (!credentials?.email || !credentials?.password) {
           return null;
         }
 
         const user = getUserByEmail(credentials.email.toLowerCase());
+        if (!user) return null;
 
-        if (!user) {
-          return null;
-        }
-
-        // If user has a password hash, verify it
         if (user.passwordHash) {
-          const isValid = verifyPassword(user.passwordHash, credentials.password);
-          if (!isValid) {
+          if (!verifyPassword(user.passwordHash, credentials.password)) {
             return null;
           }
         }
@@ -52,33 +57,43 @@ const authOptions: NextAuthOptions = {
     signIn: '/auth/signin',
     error: '/auth/error',
   },
-  session: {
-    strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 days
-  },
-  jwt: {
-    secret: process.env.NEXTAUTH_SECRET,
-  },
-  secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
+    jwt({ token, user, account }) {
+      if (account && user) {
         token.id = user.id;
         token.name = user.name;
         token.email = user.email;
       }
+      if (token.id) {
+        const fresh = getUserById(token.id as string);
+        if (fresh) {
+          (token as any).role = fresh.role ?? "user";
+        }
+      }
       return token;
     },
-    async session({ session, token }) {
-      if (token && session.user) {
+    session({ session, token }) {
+      if (session.user) {
         (session.user as any).id = token.id as string;
-        (session.user as any).name = token.name as string;
-        (session.user as any).email = token.email as string;
+        (session.user as any).role = (token as any).role ?? "user";
       }
       return session;
+    }
+  },
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60,
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+  events: {
+    signInError({ error }) {
+      // Don't log details — could be enumeration
+      if (error?.message !== "RL") {
+        console.error("Auth sign-in error");
+      }
     }
   }
 };
 
 const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST };
+export { handler as GET, handler as POST }

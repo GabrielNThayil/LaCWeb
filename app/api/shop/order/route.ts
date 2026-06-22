@@ -5,12 +5,40 @@ import {
   signDispatchPayload,
   type DispatchPayload
 } from "../../../../lib/delivery-token";
+import { preSaveOrder } from "../verify/route";
+import { rateLimitOrder } from "@/lib/rate-limit";
 
 type Fulfillment = "delivery" | "pickup";
 
+function getClientIp(request: Request): string {
+  return (
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    request.headers.get("x-real-ip") ??
+    "unknown"
+  );
+}
+
 export async function POST(request: Request) {
+  // ── Rate limit ───────────────────────────────────────────────────────────
+  const ip = getClientIp(request);
+  const { allowed, retryAfterMs } = rateLimitOrder(ip);
+  if (!allowed) {
+    return NextResponse.json(
+      { error: "Too many order requests. Please wait a moment." },
+      {
+        status: 429,
+        headers: { "Retry-After": String(Math.ceil(retryAfterMs / 1000)) },
+      }
+    );
+  }
+
   try {
-    const body = await request.json();
+    let body: Record<string, any>;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
+    }
     const fulfillment: Fulfillment =
       body.fulfillment === "pickup" ? "pickup" : "delivery";
 
@@ -116,6 +144,29 @@ export async function POST(request: Request) {
       );
     }
 
+    // ── Pre-save order data so verify route can retrieve it ─────────────────
+    await preSaveOrder({
+      razorpayOrderId: order.id,
+      items: body.items ?? [],
+      fulfillment,
+      timing: body.timing,
+      customer: {
+        name: body.customer.name,
+        phone: body.customer.phone,
+        email: body.customer.email,
+        address: body.customer.address,
+        landmark: body.customer.landmark,
+        coordinates: body.customer.coordinates
+      },
+      pricing: {
+        subtotal: pricing.subtotal,
+        packaging: pricing.packaging,
+        delivery: pricing.delivery,
+        total: pricing.total
+      },
+      instructions: body.instructions
+    });
+
     const dispatchPayload: DispatchPayload | null =
       fulfillment === "delivery"
         ? {
@@ -154,9 +205,11 @@ export async function POST(request: Request) {
       dispatchToken: dispatchPayload ? signDispatchPayload(dispatchPayload) : null
     });
   } catch (error) {
+    // Log internally — don't expose error details to client
+    console.error("Shop order error");
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Unable to process cart." },
-      { status: 400 }
+      { error: "Unable to process your order. Please try again." },
+      { status: 500 }
     );
   }
 }
