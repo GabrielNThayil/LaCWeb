@@ -2,12 +2,13 @@
 
 import Image from "next/image";
 import Script from "next/script";
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import OrderingModule from "../components/OrderingModule";
 import MoodRecommender from "../components/MoodRecommender";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { getUserOrders, getUserPreferences, updateUserPreferences } from "@/lib/storage";
 import { PLACEHOLDERS } from "@/lib/blurs";
+import { MenuItem } from "@/types/menuTypes";
 import {
   AnimatePresence,
   motion,
@@ -116,51 +117,6 @@ const heroCarousel = [
   }
 ];
 
-const menuItems = [
-  {
-    name: "House Coffee",
-    category: "coffee",
-    price: "INR 180",
-    detail: "Freshly brewed house blend with a smooth, balanced taste.",
-    image: "/pics/coffee.png"
-  },
-  {
-    name: "Burger",
-    category: "brunch",
-    price: "INR 290",
-    detail: "Juicy patty with fresh vegetables and house sauce.",
-    image: "/pics/Burger Landscape.png"
-  },
-  {
-    name: "Hot Chocolate",
-    category: "drinks",
-    price: "INR 220",
-    detail: "Rich Belgian chocolate with steamed milk and whipped cream.",
-    image: "/pics/Hot Chocolate Landscape.png"
-  },
-  {
-    name: "Korean Bun",
-    category: "brunch",
-    price: "INR 150",
-    detail: "Soft steamed bun with sweet red bean filling.",
-    image: "/pics/Korean Bun.png"
-  },
-  {
-    name: "Burnt Basque Cheesecake",
-    category: "desserts",
-    price: "INR 310",
-    detail: "Deeply caramelized top with a molten cream cheese center.",
-    image: "/pics/Burnt Basque Cheesecake Landscape.png"
-  },
-  {
-    name: "Tres Leches",
-    category: "desserts",
-    price: "INR 280",
-    detail: "Classic Latin American cake soaked in three kinds of milk.",
-    image: "/pics/Tres Leches.png"
-  }
-];
-
 const specials = [
   {
     title: "Burnt Basque Cheesecake",
@@ -217,13 +173,15 @@ const rentalUses = [
 ];
 
 const timeSlots = ["09:00", "11:30", "14:00", "16:30", "19:00"];
-const filters = ["all", "coffee", "desserts", "brunch", "drinks"];
+const filters = ["all", "coffee", "drinks", "brunch", "bakes", "desserts"];
 
 export default function Home() {
   const [activeFilter, setActiveFilter] = useState("all");
   const [specialIndex, setSpecialIndex] = useState(0);
   const [scrolled, setScrolled] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [menuLoading, setMenuLoading] = useState(true);
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [hours, setHours] = useState(1);
   const [selectedSlot, setSelectedSlot] = useState(timeSlots[0]);
   const [eventType, setEventType] = useState(rentalUses[0]);
@@ -239,6 +197,19 @@ export default function Home() {
   const { scrollY } = useScroll();
   const heroY = useTransform(scrollY, [0, 800], [0, prefersReducedMotion ? 0 : 160]);
   const heroScale = useTransform(scrollY, [0, 800], [1, prefersReducedMotion ? 1 : 1.08]);
+
+  // Fetch menu items from API
+  useEffect(() => {
+    fetch('/api/menu')
+      .then(res => res.json())
+      .then(data => {
+        setMenuItems(data.items || []);
+        setMenuLoading(false);
+      })
+      .catch(() => {
+        setMenuLoading(false);
+      });
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 32);
@@ -274,7 +245,7 @@ export default function Home() {
       activeFilter === "all"
         ? menuItems
         : menuItems.filter((item) => item.category === activeFilter),
-    [activeFilter]
+    [activeFilter, menuItems]
   );
 
   const rentalTotal = hours * 3000;
@@ -709,43 +680,82 @@ export default function Home() {
         </div>
         <motion.div layout className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence mode="popLayout">
-            {filteredMenu.map((item) => (
-              <motion.article
-                layout
-                key={item.name}
-                initial={{ opacity: 0, y: 24, scale: 0.97 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 18, scale: 0.96 }}
-                whileHover={{ y: -8 }}
-                className="group overflow-hidden rounded-[1.5rem] border border-crown-espresso/18 bg-white/88 shadow-[0_14px_45px_rgba(97,72,28,.12)] backdrop-blur-xl"
-              >
-                <div className="relative aspect-[1.2] overflow-hidden">
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    fill
-                    placeholder="blur"
-                    blurDataURL={PLACEHOLDERS.paper}
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-cover transition duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute right-4 top-4 rounded-full bg-crown-paper/85 px-4 py-2 font-display text-xl font-semibold text-crown-espresso backdrop-blur">
-                    {item.price}
+            {menuLoading ? (
+              // Loading skeleton
+              [...Array(6)].map((_, i) => (
+                <div
+                  key={i}
+                  className="overflow-hidden rounded-[1.5rem] border border-crown-espresso/18 bg-white/88 shadow-[0_14px_45px_rgba(97,72,28,.12)] backdrop-blur-xl"
+                >
+                  <div className="aspect-[1.2] bg-crown-gold/10 animate-pulse" />
+                  <div className="p-6 space-y-3">
+                    <div className="h-3 w-16 bg-crown-gold/10 rounded animate-pulse" />
+                    <div className="h-6 w-3/4 bg-crown-gold/10 rounded animate-pulse" />
+                    <div className="h-4 w-full bg-crown-gold/10 rounded animate-pulse" />
                   </div>
                 </div>
-                <div className="p-6">
-                  <p className="text-xs font-bold uppercase tracking-[0.24em] text-crown-gold">
-                    {item.category}
-                  </p>
-                  <h3 className="mt-3 font-display text-3xl font-semibold">
-                    {item.name}
-                  </h3>
-                  <p className="mt-3 leading-7 text-crown-espresso/88">
-                    {item.detail}
-                  </p>
-                </div>
-              </motion.article>
-            ))}
+              ))
+            ) : filteredMenu.length === 0 ? (
+              <div className="col-span-full text-center py-12 text-crown-espresso/60">
+                <Coffee className="w-12 h-12 mx-auto mb-4 opacity-30" />
+                <p>No items found in this category.</p>
+              </div>
+            ) : (
+              filteredMenu.map((item) => (
+                <motion.article
+                  layout
+                  key={item.id}
+                  initial={{ opacity: 0, y: 24, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 18, scale: 0.96 }}
+                  whileHover={{ y: -8 }}
+                  className="group overflow-hidden rounded-[1.5rem] border border-crown-espresso/18 bg-white/88 shadow-[0_14px_45px_rgba(97,72,28,.12)] backdrop-blur-xl"
+                >
+                  <div className="relative aspect-[1.2] overflow-hidden">
+                    <Image
+                      src={item.localImage || item.unsplashImage || '/pics/coffee.png'}
+                      alt={item.name}
+                      fill
+                      placeholder="blur"
+                      blurDataURL={PLACEHOLDERS.paper}
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover transition duration-700 group-hover:scale-110"
+                    />
+                    {item.badge && (
+                      <div className="absolute left-4 top-4 rounded-full bg-crown-gold/90 px-3 py-1 text-xs font-bold uppercase tracking-wider text-crown-espresso">
+                        {item.badge}
+                      </div>
+                    )}
+                    <div className="absolute right-4 top-4 rounded-full bg-crown-paper/85 px-4 py-2 font-display text-xl font-semibold text-crown-espresso backdrop-blur">
+                      ₹{item.price}
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <p className="text-xs font-bold uppercase tracking-[0.24em] text-crown-gold">
+                      {item.category}
+                    </p>
+                    <h3 className="mt-3 font-display text-3xl font-semibold">
+                      {item.name}
+                    </h3>
+                    <p className="mt-3 leading-7 text-crown-espresso/88">
+                      {item.description}
+                    </p>
+                    {item.dietaryTags.length > 0 && (
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {item.dietaryTags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="text-xs px-2 py-1 rounded-full bg-crown-cream/70 text-crown-espresso/70"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </motion.article>
+              ))
+            )}
           </AnimatePresence>
         </motion.div>
         <div className="mt-9 flex flex-wrap gap-3">

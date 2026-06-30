@@ -1,49 +1,40 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import type { MenuSkeleton } from '@/types/menuTypes';
+import fs from "fs";
+import path from "path";
+import type { NextApiRequest, NextApiResponse } from "next";
+import type { MenuApiResponse } from "@/types/menuTypes";
 
-// Menu Skeleton - Adaptable structure
-const createBaseMenuItem = (
-  id: string,
-  name: string,
-  description: string,
-  price: number,
-  categories: string[]
-) => ({
-  id,
-  name,
-  description,
-  price,
-  categories,
-  dietaryTags: [],
-  allergens: [],
-  preparationTime: 0,
-  featured: false,
-});
-
-const menuSkeleton: MenuSkeleton = {
-  version: '1.0.0',
-  lastUpdated: new Date().toISOString(),
-  items: {
-    Coffee: [
-      createBaseMenuItem('COFFEE1', 'Single Origin Pour Over', 'Clean, bright acidity with floral notes from Kenya', 240, ['Coffee', 'Drinks']),
-      createBaseMenuItem('COFFEE2', 'Cinnanut Latte', 'Smoky espresso, nutty finish, silken milk.', 220, ['Coffee', 'Drinks']),
-    ],
-    Drinks: [
-      createBaseMenuItem('DRINK1', 'Ruby Rose Elixir', 'Floral, sparkling and gently citrus-led.', 240, ['Drinks']),
-    ],
-    Brunch: [
-      createBaseMenuItem('BRUNCH1', 'Almond Croissant', 'Roasted almond cream, laminated pastry', 200, ['Brunch']),
-    ],
-    Desserts: [
-      createBaseMenuItem('DESSERT1', 'Burnt Basque Cheesecake', 'Caramelized top, molten cream cheese centre.', 310, ['Desserts']),
-    ],
-  },
-  metadata: {
-    dietaryFilters: ['vegan', 'gluten-free', 'nut-free'],
-    allergenFilters: ['nuts', 'dairy', 'soy'],
-  },
-};
+function readMenu(): MenuApiResponse {
+  const filePath = path.join(process.cwd(), "data", "menu.json");
+  try {
+    const raw = fs.readFileSync(filePath, "utf8");
+    return JSON.parse(raw) as MenuApiResponse;
+  } catch {
+    // Fallback: serve empty but valid response
+    return {
+      version: "1.0.0",
+      lastUpdated: new Date().toISOString(),
+      categories: [],
+      items: [],
+    };
+  }
+}
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  return res.status(200).json(menuSkeleton);
+  if (req.method !== "GET") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+
+  const menu = readMenu();
+
+  // Optionally filter by category
+  const { category } = req.query;
+  if (category && typeof category === "string") {
+    const filtered = menu.items.filter((item) => item.category === category);
+    return res.status(200).json({ ...menu, items: filtered });
+  }
+
+  return res.status(200).json(menu);
 }
+
+// Export for use in server-side components
+export { readMenu };

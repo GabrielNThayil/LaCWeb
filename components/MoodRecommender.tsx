@@ -1,32 +1,38 @@
 "use client";
 
-import { useEffect, useCallback, useState, useRef } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
-import { getUserPreferences } from '@/lib/storage';
-import { ArrowRight, Brain, ShoppingCart, Sparkles, RotateCcw, Zap, MessageSquare } from 'lucide-react';
-import { BaseMenuItem } from '@/types/menuTypes';
+import { useEffect, useCallback, useState, useRef } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { getUserPreferences } from "@/lib/storage";
+import { ArrowRight, Brain, ShoppingBag, Sparkles, RotateCcw, Zap, MessageSquare } from "lucide-react";
+import { MenuItem } from "@/types/menuTypes";
+import MenuItemImage from "./MenuItemImage";
 
 // Memoized fetch for menu data
-const fetchMenu = async (): Promise<BaseMenuItem[]> => {
-  let menu: BaseMenuItem[] = [];
+const fetchMenu = async (): Promise<MenuItem[]> => {
+  let menu: MenuItem[] = [];
 
   try {
-    const res = await fetch('/api/menu');
+    const res = await fetch("/api/menu");
     if (!res.ok) throw new Error(`API error! status: ${res.status}`);
-    const data = await res.json();
-    menu = (Object.values(data.items) as BaseMenuItem[][]).flat();
+    const { items } = await res.json();
+    menu = items as MenuItem[];
   } catch (error) {
-    console.error('Error fetching menu:', error);
+    console.error("Error fetching menu:", error);
     menu = [
       {
-        id: 'MOCK1',
-        name: 'Single Origin Pour Over',
-        description: 'Bright, clean pour over with floral notes',
-        price: 240,
-        categories: ['Coffee', 'Drinks'],
+        id: "fallback-cinnanut",
+        name: "Cinnanut Latte",
+        description: "Smoky espresso, nutty finish, silken milk.",
+        price: 220,
+        category: "coffee" as const,
         dietaryTags: [],
         allergens: [],
+        prepTime: "4 min",
+        featured: true,
+        localImage: null,
+        unsplashImage: null,
       },
     ];
   }
@@ -35,12 +41,12 @@ const fetchMenu = async (): Promise<BaseMenuItem[]> => {
 };
 
 const moodConfigs = [
-  { id: 'focus', icon: '🎯', name: 'Need Focus', description: 'A sharp mind needs the right fuel' },
-  { id: 'cozy', icon: '🌙', name: 'Cosy & Warm', description: 'Comfort in every sip' },
-  { id: 'treat', icon: '✨', name: 'Treat Yourself', description: 'You deserve a little extra' },
-  { id: 'morning', icon: '☀️', name: 'Morning Boost', description: 'Start your day right' },
-  { id: 'creative', icon: '🎨', name: 'Creative Flow', description: 'Unlock inspiration' },
-  { id: 'new', icon: '🆕', name: 'Try Something New', description: 'Discover the unexpected' },
+  { id: "focus", icon: "🎯", name: "Need Focus", description: "A sharp mind needs the right fuel" },
+  { id: "cozy", icon: "🌙", name: "Cosy & Warm", description: "Comfort in every sip" },
+  { id: "treat", icon: "✨", name: "Treat Yourself", description: "You deserve a little extra" },
+  { id: "morning", icon: "☀️", name: "Morning Boost", description: "Start your day right" },
+  { id: "creative", icon: "🎨", name: "Creative Flow", description: "Unlock inspiration" },
+  { id: "new", icon: "🆕", name: "Try Something New", description: "Discover the unexpected" },
 ];
 
 export default function MoodRecommender() {
@@ -48,15 +54,15 @@ export default function MoodRecommender() {
   const { data: session } = useSession();
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [recommendation, setRecommendation] = useState<{
-    drink: BaseMenuItem;
-    food: BaseMenuItem;
+    drink: MenuItem;
+    food: MenuItem;
     confidence: number;
     reasoning: string[];
   } | null>(null);
   const [loading, setLoading] = useState(false);
   const [processingStep, setProcessingStep] = useState(0);
-  const [menuItems, setMenuItems] = useState<BaseMenuItem[]>([]);
-  const [typingText, setTypingText] = useState('');
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+  const [typingText, setTypingText] = useState("");
   const [showReasoning, setShowReasoning] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -64,21 +70,21 @@ export default function MoodRecommender() {
     // Store recommended items in sessionStorage for the order module
     if (recommendation) {
       const orderItems = [
-        { name: recommendation.drink.name, price: recommendation.drink.price, type: 'drink' },
-        { name: recommendation.food.name, price: recommendation.food.price, type: 'food' },
+        { name: recommendation.drink.name, price: recommendation.drink.price, type: "drink" },
+        { name: recommendation.food.name, price: recommendation.food.price, type: "food" },
       ];
-      sessionStorage.setItem('moodOrder', JSON.stringify(orderItems));
+      sessionStorage.setItem("moodOrder", JSON.stringify(orderItems));
     }
-    // Navigate to order section
-    router.push('/#order');
+    // Navigate to order section or OrderingModule would handle it
+    router.push("/#order");
   };
 
   const processingMessages = [
-    'Analyzing your mood...',
-    'Scanning flavor profiles...',
-    'Cross-referencing preferences...',
-    'Matching pairings...',
-    'Finalizing recommendation...',
+    "Analyzing your mood...",
+    "Scanning flavor profiles...",
+    "Cross-referencing preferences...",
+    "Matching pairings...",
+    "Finalizing recommendation...",
   ];
 
   useEffect(() => {
@@ -106,9 +112,9 @@ export default function MoodRecommender() {
 
   useEffect(() => {
     if (recommendation && !showReasoning) {
-      const fullReasoning = recommendation.reasoning.join('\n\n');
+      const fullReasoning = recommendation.reasoning.join("\n\n");
       let i = 0;
-      setTypingText('');
+      setTypingText("");
       setShowReasoning(true);
 
       const typeInterval = setInterval(() => {
@@ -129,7 +135,7 @@ export default function MoodRecommender() {
     setLoading(true);
     setRecommendation(null);
     setShowReasoning(false);
-    setTypingText('');
+    setTypingText("");
 
     setTimeout(() => {
       const moodConfig = moodConfigs.find((m) => m.id === selectedMood);
@@ -140,12 +146,12 @@ export default function MoodRecommender() {
 
       // Filter items matching mood
       const moodKeywords: Record<string, string[]> = {
-        focus: ['espresso', 'coffee', 'cold brew', 'black'],
-        cozy: ['latte', 'cappuccino', 'hot chocolate', 'croissant', 'warm'],
-        treat: ['cheesecake', 'tiramisu', 'mocha', 'rose', 'premium'],
-        morning: ['pour over', 'cappuccino', 'croissant', 'breakfast', 'matcha'],
-        creative: ['matcha', 'latte art', 'special', 'mocktail', 'dessert'],
-        new: ['elixir', 'special', 'rose', 'seasonal', 'mocktails'],
+        focus: ["espresso", "coffee", "cold brew", "black"],
+        cozy: ["latte", "cappuccino", "hot chocolate", "croissant", "warm"],
+        treat: ["cheesecake", "tiramisu", "mocha", "rose", "premium"],
+        morning: ["pour over", "cappuccino", "croissant", "breakfast", "matcha"],
+        creative: ["matcha", "latte art", "special", "mocktail", "dessert"],
+        new: ["elixir", "special", "rose", "seasonal", "mocktails"],
       };
 
       const keywords = moodKeywords[selectedMood] || [];
@@ -154,13 +160,13 @@ export default function MoodRecommender() {
           (kw) =>
             item.name.toLowerCase().includes(kw) ||
             item.description?.toLowerCase().includes(kw) ||
-            item.categories.some((c) => c.toLowerCase().includes(kw))
+            item.category.toLowerCase().includes(kw)
         )
       );
 
       const pool = matched.length >= 2 ? matched : menuItems;
 
-      // Pick items
+      // Pick items — use name as identifier
       const drinkIdx = Math.floor(Math.random() * pool.length);
       let foodIdx = Math.floor(Math.random() * pool.length);
       while (foodIdx === drinkIdx && pool.length > 1) {
@@ -171,21 +177,22 @@ export default function MoodRecommender() {
       const foodItem = pool[foodIdx];
 
       // Apply user preferences if logged in
-      const userPrefs = getUserPreferences(session?.user?.id ?? '');
+      const userPrefs = getUserPreferences(session?.user?.id ?? "");
       const confidenceScore = session ? 0.92 : 0.78;
 
-      // Generate AI-style reasoning
       const reasoning = [
         `Detected mood: ${moodConfig.name}`,
         `Analyzing ${drinkItem.name} characteristics...`,
         `Matching flavor profile with ${foodItem.name}...`,
         `Confidence: ${Math.round(confidenceScore * 100)}%`,
-        `Pairing optimized for ${selectedMood === 'focus' ? 'clarity and alertness' :
-          selectedMood === 'cozy' ? 'warmth and comfort' :
-          selectedMood === 'treat' ? 'indulgence and satisfaction' :
-          selectedMood === 'morning' ? 'energy and refreshment' :
-          selectedMood === 'creative' ? 'inspiration and flow' :
-          'discovery and adventure'}.`,
+        `Pairing optimized for ${
+          selectedMood === "focus" ? "clarity and alertness" :
+          selectedMood === "cozy" ? "warmth and comfort" :
+          selectedMood === "treat" ? "indulgence and satisfaction" :
+          selectedMood === "morning" ? "energy and refreshment" :
+          selectedMood === "creative" ? "inspiration and flow" :
+          "discovery and adventure"
+        }.`,
       ];
 
       setRecommendation({
@@ -202,7 +209,7 @@ export default function MoodRecommender() {
     setSelectedMood(null);
     setRecommendation(null);
     setShowReasoning(false);
-    setTypingText('');
+    setTypingText("");
   };
 
   const handleMoodSelect = (moodId: string) => {
@@ -221,7 +228,6 @@ export default function MoodRecommender() {
               <stop offset="100%" stopColor="#BF9742" />
             </linearGradient>
           </defs>
-          {/* Neural network pattern */}
           {Array.from({ length: 20 }).map((_, i) => (
             <g key={i}>
               <circle cx={50 + (i % 5) * 180} cy={80 + Math.floor(i / 5) * 120} r="3" fill="url(#lineGrad)" opacity="0.5" />
@@ -268,16 +274,16 @@ export default function MoodRecommender() {
                   group relative p-5 rounded-2xl border transition-all duration-300
                   hover:shadow-lg hover:-translate-y-0.5
                   ${isSelected
-                    ? 'bg-crown-espresso border-crown-espresso text-crown-paper shadow-xl'
-                    : 'bg-white/60 border-crown-espresso/15 hover:border-crown-espresso/30 hover:bg-white/90'
+                    ? "bg-crown-espresso border-crown-espresso text-crown-paper shadow-xl"
+                    : "bg-white/60 border-crown-espresso/15 hover:border-crown-espresso/30 hover:bg-white/90"
                   }
                 `}
               >
                 <span className="block text-3xl mb-2">{mood.icon}</span>
-                <span className={`block font-medium text-sm ${isSelected ? 'text-crown-paper' : 'text-crown-espresso'}`}>
+                <span className={`block font-medium text-sm ${isSelected ? "text-crown-paper" : "text-crown-espresso"}`}>
                   {mood.name}
                 </span>
-                <span className={`block text-xs mt-0.5 ${isSelected ? 'text-crown-paper/70' : 'text-crown-espresso/40'}`}>
+                <span className={`block text-xs mt-0.5 ${isSelected ? "text-crown-paper/70" : "text-crown-espresso/40"}`}>
                   {mood.description}
                 </span>
               </button>
@@ -316,9 +322,9 @@ export default function MoodRecommender() {
                   key={i}
                   className="w-1 bg-crown-gold/30 rounded-full animate-pulse"
                   style={{
-                    height: `${8 + Math.random() * 20}px`,
+                    height: `${8 + Math.floor(Math.random() * 20)}px`,
                     animationDelay: `${i * 80}ms`,
-                    animationDuration: '600ms',
+                    animationDuration: "600ms",
                   }}
                 />
               ))}
@@ -395,7 +401,7 @@ export default function MoodRecommender() {
                 </div>
                 <div className="font-mono text-sm text-crown-espresso/60 leading-relaxed whitespace-pre-line">
                   {typingText}
-                  {typingText.length < recommendation.reasoning.join('\n\n').length && (
+                  {typingText.length < recommendation.reasoning.join("\n\n").length && (
                     <span className="inline-block w-2 h-4 bg-crown-gold/60 ml-0.5 animate-pulse" />
                   )}
                 </div>
@@ -416,7 +422,7 @@ export default function MoodRecommender() {
                       onClick={handleOrderNow}
                       className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-crown-espresso text-crown-paper font-medium text-sm hover:bg-crown-caramel transition-colors shadow-lg"
                     >
-                      <ShoppingCart className="w-4 h-4" />
+                      <ShoppingBag className="w-4 h-4" />
                       Order This Pairing
                     </button>
 
