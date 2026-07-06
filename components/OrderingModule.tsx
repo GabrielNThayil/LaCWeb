@@ -62,7 +62,7 @@ type RazorpayConstructor = new (options: {
   modal: { ondismiss: () => void };
 }) => { open: () => void };
 
-const filters: Filter[] = ["All", "Coffee", "Desserts", "Brunch", "Drinks"];
+const filters: Filter[] = ["All", "Coffee", "Bakes", "Brunch", "Desserts", "Drinks"];
 const scheduleOptions = [
   "ASAP",
   "Today, 12:30 PM",

@@ -7,7 +7,7 @@ export function formatCurrency(amount: number) {
   return `INR ${amount.toLocaleString("en-IN")}`;
 }
 
-export type OrderCategory = "Coffee" | "Desserts" | "Brunch" | "Drinks";
+export type OrderCategory = "Coffee" | "Desserts" | "Brunch" | "Drinks" | "Bakes";
 
 export type OrderMenuItem = {
   id: string;
@@ -20,7 +20,7 @@ export type OrderMenuItem = {
 };
 
 export const CAT_MAP: Record<string, OrderCategory> = {
-  coffee: "Coffee", drinks: "Drinks", brunch: "Brunch", bakes: "Brunch", desserts: "Desserts",
+  coffee: "Coffee", drinks: "Drinks", brunch: "Brunch", bakes: "Bakes", desserts: "Desserts",
 };
 
 export function calculateOrderTotal(
