@@ -1,12 +1,15 @@
+import "server-only";
+
 import { NextResponse } from "next/server";
-import { calculateOrderTotal } from "../../../../lib/order-catalog";
+import { orderMenu } from "../../../../lib/order-catalog";
+import { calculateOrderTotal } from "../../../../lib/order-utils";
 import { isBorzoConfigured, quoteBorzoDelivery } from "../../../../lib/borzo";
 import {
   signDispatchPayload,
   type DispatchPayload
 } from "../../../../lib/delivery-token";
-import { preSaveOrder } from "../verify/route";
 import { rateLimitOrder } from "@/lib/rate-limit";
+import { writePendingOrder, ensureTempDir } from "../../../../lib/pending-orders";
 
 type Fulfillment = "delivery" | "pickup";
 
@@ -94,6 +97,7 @@ export async function POST(request: Request) {
 
     const pricing = calculateOrderTotal(
       body.items ?? [],
+      orderMenu,
       fulfillment,
       providerQuote?.fee
     );
@@ -145,8 +149,7 @@ export async function POST(request: Request) {
     }
 
     // ── Pre-save order data so verify route can retrieve it ─────────────────
-    await preSaveOrder({
-      razorpayOrderId: order.id,
+    writePendingOrder(order.id, {
       items: body.items ?? [],
       fulfillment,
       timing: body.timing,

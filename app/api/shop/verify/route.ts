@@ -1,7 +1,5 @@
 import crypto from "crypto";
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
 import { dispatchBorzoDelivery, isBorzoConfigured } from "../../../../lib/borzo";
 import {
   validateDispatchPayload,
@@ -9,60 +7,16 @@ import {
 } from "../../../../lib/delivery-token";
 import { saveOrder } from "../../../../lib/order-store";
 import { orderMenu } from "../../../../lib/order-catalog";
+import {
+  ensureTempDir,
+  readPendingOrder,
+  deletePendingOrder,
+} from "../../../../lib/pending-orders";
 
-const TEMP_DATA_DIR = path.join(process.cwd(), "data", "pending");
-
-function ensureDir() {
-  if (!fs.existsSync(TEMP_DATA_DIR)) {
-    fs.mkdirSync(TEMP_DATA_DIR, { recursive: true });
-  }
-}
-
-function readPendingOrder(orderId: string) {
-  const file = path.join(TEMP_DATA_DIR, `${orderId}.json`);
-  if (!fs.existsSync(file)) return null;
-  try {
-    return JSON.parse(fs.readFileSync(file, "utf8"));
-  } catch {
-    return null;
-  }
-}
-
-function deletePendingOrder(orderId: string) {
-  const file = path.join(TEMP_DATA_DIR, `${orderId}.json`);
-  if (fs.existsSync(file)) fs.unlinkSync(file);
-}
-
-// ─── Pre-save order data (called by shop/order before sending to client) ──────
-export async function preSaveOrder(data: {
-  razorpayOrderId: string;
-  items: { id: string; quantity: number }[];
-  fulfillment: "delivery" | "pickup";
-  timing: string;
-  customer: {
-    name: string;
-    phone: string;
-    email?: string;
-    address?: string;
-    landmark?: string;
-    coordinates?: { latitude: number; longitude: number };
-  };
-  pricing: {
-    subtotal: number;
-    packaging: number;
-    delivery: number;
-    total: number;
-  };
-  instructions?: string;
-}) {
-  ensureDir();
-  const file = path.join(TEMP_DATA_DIR, `${data.razorpayOrderId}.json`);
-  fs.writeFileSync(file, JSON.stringify(data), "utf8");
-}
 
 // ─── Verify & Save (main POST handler) ───────────────────────────────────────
 export async function POST(request: Request) {
-  ensureDir();
+  ensureTempDir();
 
   const body = await request.json();
   const keySecret = process.env.RAZORPAY_KEY_SECRET;

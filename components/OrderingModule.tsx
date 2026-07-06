@@ -26,9 +26,9 @@ import {
   deliveryFee,
   formatCurrency,
   freeDeliveryThreshold,
-  orderMenu,
-  type OrderCategory
-} from "../lib/order-catalog";
+  type OrderCategory,
+  type OrderMenuItem
+} from "@/lib/order-utils";
 import { getUserPreferences, updateUserPreferences } from "@/lib/storage";
 import { PLACEHOLDERS } from "@/lib/blurs";
 
@@ -92,7 +92,8 @@ export default function OrderingModule() {
   const [message, setMessage] = useState("");
   const [deliveryQuote, setDeliveryQuote] = useState<DeliveryQuote | null>(null);
   const [isQuoting, setIsQuoting] = useState(false);
-  const { data: session } = useSession();
+  const [orderMenu, setOrderMenu] = useState<OrderMenuItem[]>([]);
+  const [menuLoading, setMenuLoading] = useState(true);
   const [confirmation, setConfirmation] = useState<{
     id: string;
     eta: string;
@@ -104,6 +105,24 @@ export default function OrderingModule() {
       message: string;
     };
   } | null>(null);
+
+  // Fetch menu from API
+  useEffect(() => {
+    async function loadMenu() {
+      try {
+        const res = await fetch("/api/menu");
+        if (res.ok) {
+          const data = await res.json();
+          setOrderMenu(data.orderItems || []);
+        }
+      } catch {
+        console.error("Failed to load menu");
+      } finally {
+        setMenuLoading(false);
+      }
+    }
+    loadMenu();
+  }, []);
 
   useEffect(() => {
     // Load cart from localStorage
@@ -120,7 +139,7 @@ export default function OrderingModule() {
 
     // Check for mood-based order from AI recommender
     const moodOrder = sessionStorage.getItem('moodOrder');
-    if (moodOrder) {
+    if (moodOrder && orderMenu.length > 0) {
       try {
         const orderItems = JSON.parse(moodOrder);
         // Add each item to cart (match by name)
@@ -138,7 +157,16 @@ export default function OrderingModule() {
     }
 
     setCart(loadedCart);
-  }, []);
+  }, [orderMenu]);
+
+  // User session
+  const { data: session } = useSession();
+  useEffect(() => {
+    if (session?.user?.id) {
+      const user = getUserPreferences(session.user.id);
+      // Could prefill form with saved data if needed
+    }
+  }, [session]);
 
   useEffect(() => {
     window.localStorage.setItem(storageKey, JSON.stringify(cart));
@@ -166,10 +194,11 @@ export default function OrderingModule() {
     }
     return calculateOrderTotal(
       cartItems.map((item) => ({ id: item.id, quantity: item.quantity })),
+      orderMenu,
       fulfillment,
       deliveryQuote?.configured ? deliveryQuote.fee : undefined
     );
-  }, [cartItems, fulfillment, deliveryQuote]);
+  }, [cartItems, orderMenu, fulfillment, deliveryQuote]);
 
   const itemCount = cartItems.reduce((count, item) => count + item.quantity, 0);
   const isLoading = status === "creating" || status === "paying";

@@ -1,13 +1,13 @@
+import "server-only";
+
 import fs from "fs";
 import path from "path";
 import type { MenuItem } from "@/types/menuTypes";
-import type { OrderCategory } from "./order-catalog";
+import type { OrderCategory } from "./order-utils";
 
-// Re-export types
-export type { OrderCategory, OrderMenuItem } from "./order-catalog";
-
-// Read order-catalog types (kept for backward compat with OrderingModule)
-export { orderMenu, packagingFee, deliveryFee, freeDeliveryThreshold, formatCurrency, calculateOrderTotal } from "./order-catalog";
+// Re-export types and utilities from order-utils
+export type { OrderCategory, OrderMenuItem } from "./order-utils";
+export { packagingFee, deliveryFee, freeDeliveryThreshold, formatCurrency, calculateOrderTotal, CAT_MAP } from "./order-utils";
 
 // ── Read JSON menu lazily (server-side only) ────────────────────────────────
 
