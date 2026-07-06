@@ -1,3 +1,7 @@
+// Server-side only: loads menu from filesystem
+// Use @/lib/order-utils for client-safe functions
+import "server-only";
+
 import fs from "fs";
 import path from "path";
 
@@ -33,31 +37,5 @@ function loadJson(): OrderMenuItem[] {
   }
 }
 
+// Only load on the server - this will be tree-shaken from client bundles
 export const orderMenu: OrderMenuItem[] = loadJson();
-export const packagingFee = 25;
-export const deliveryFee = 59;
-export const freeDeliveryThreshold = 800;
-
-export function formatCurrency(amount: number) {
-  return `INR ${amount.toLocaleString("en-IN")}`;
-}
-
-export function calculateOrderTotal(
-  items: Array<{ id: string; quantity: number }>,
-  fulfillment: "delivery" | "pickup",
-  providerDeliveryFee?: number
-) {
-  const products = new Map(orderMenu.map((i) => [i.id, i]));
-  const lines = items.map(({ id, quantity }) => {
-    const p = products.get(id);
-    if (!p || !Number.isInteger(quantity) || quantity < 1 || quantity > 12) {
-      throw new Error("Invalid cart item.");
-    }
-    return { id: p.id, name: p.name, price: p.price, quantity, total: p.price * quantity };
-  });
-  if (lines.length === 0) throw new Error("Cart is empty.");
-  const subtotal = lines.reduce((s, i) => s + i.total, 0);
-  const fee = providerDeliveryFee !== undefined ? Math.round(providerDeliveryFee) : deliveryFee;
-  const delivery = fulfillment === "delivery" && subtotal < freeDeliveryThreshold ? fee : 0;
-  return { lines, subtotal, packaging: packagingFee, delivery, total: subtotal + packagingFee + delivery };
-}

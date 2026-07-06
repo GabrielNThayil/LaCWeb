@@ -16,7 +16,7 @@ import {
   Users
 } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { formatCurrency } from "@/lib/order-catalog";
+import { formatCurrency, packagingFee, deliveryFee, freeDeliveryThreshold } from "@/lib/order-utils";
 import { getUserById } from "@/lib/storage";
 import Link from "next/link";
 
