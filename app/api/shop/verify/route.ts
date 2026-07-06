@@ -141,7 +141,7 @@ export async function POST(request: Request) {
     customerEmail: orderData.customer.email,
     customerAddress: orderData.customer.address,
     customerLandmark: orderData.customer.landmark,
-    fulfillment: orderData.fulfillment,
+    fulfillment: orderData.fulfillment as "delivery" | "pickup",
     timing: orderData.timing,
     instructions: orderData.instructions,
     items: resolvedItems,
