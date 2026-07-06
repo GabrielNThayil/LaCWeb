@@ -58,7 +58,14 @@ export async function POST(request: Request) {
   }
 
   // ── Read pending order data ───────────────────────────────────────────────
-  const orderData = readPendingOrder(razorpay_order_id);
+  const orderData = readPendingOrder(razorpay_order_id) as {
+    items: { id: string; quantity: number }[];
+    customer: { name: string; phone: string; email?: string; address?: string; landmark?: string };
+    fulfillment: string;
+    timing: string;
+    instructions?: string;
+    pricing: { subtotal: number; packaging: number; delivery: number; total: number };
+  } | null;
   deletePendingOrder(razorpay_order_id);
 
   if (!orderData) {
@@ -69,7 +76,7 @@ export async function POST(request: Request) {
   }
 
   // ── Resolve item details ─────────────────────────────────────────────────
-  const resolvedItems = (orderData.items as { id: string; quantity: number }[]).map(
+  const resolvedItems = orderData.items.map(
     (entry) => {
       const menuItem = orderMenu.find((m) => m.id === entry.id);
       return {
