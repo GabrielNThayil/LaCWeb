@@ -85,14 +85,6 @@ const authOptions: NextAuthOptions = {
     maxAge: 30 * 24 * 60 * 60,
   },
   secret: process.env.NEXTAUTH_SECRET,
-  events: {
-    signInError({ error }) {
-      // Don't log details — could be enumeration
-      if (error?.message !== "RL") {
-        console.error("Auth sign-in error");
-      }
-    }
-  }
 };
 
 const handler = NextAuth(authOptions);
