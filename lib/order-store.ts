@@ -59,7 +59,8 @@ export function getOrders(filters?: {
     orders = orders.filter((o) => o.fulfillment === filters.fulfillment);
   }
   if (filters?.date) {
-    orders = orders.filter((o) => o.createdAt.startsWith(filters.date));
+    const date = filters.date;
+    orders = orders.filter((o) => o.createdAt.startsWith(date));
   }
 
   return orders;

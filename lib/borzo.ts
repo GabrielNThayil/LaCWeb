@@ -103,7 +103,7 @@ export async function quoteBorzoDelivery(request: DeliveryRequest): Promise<{
   const safePhone = normalizePhone(request.customer.phone);
   const safeAddress = normalizeAddress(
     sanitizeString(request.customer.address, 150),
-    sanitizeString(request.customer.landmark, 50)
+    sanitizeString(request.customer.landmark ?? "", 50)
   );
 
   if (!safeName || !safePhone || !safeAddress) {
@@ -169,7 +169,7 @@ export async function dispatchBorzoDelivery(request: DeliveryRequest): Promise<{
   const safePhone = normalizePhone(request.customer.phone);
   const safeAddress = normalizeAddress(
     sanitizeString(request.customer.address, 150),
-    sanitizeString(request.customer.landmark, 50)
+    sanitizeString(request.customer.landmark ?? "", 50)
   );
   const safeInstructions = sanitizeString(request.instructions ?? "", 200);
   const safeRef = sanitizeString(request.reference, 50);

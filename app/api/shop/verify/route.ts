@@ -6,6 +6,7 @@ import {
   type DispatchPayload
 } from "../../../../lib/delivery-token";
 import { saveOrder } from "../../../../lib/order-store";
+import type { DeliveryStatus } from "../../../../lib/models";
 import { orderMenu } from "../../../../lib/order-catalog";
 import {
   ensureTempDir,
@@ -151,7 +152,7 @@ export async function POST(request: Request) {
     total: orderData.pricing.total,
     paymentAmount: orderData.pricing.total,
     status: "new" as const,
-    deliveryStatus: fulfillment === "delivery" ? "pending" : undefined,
+    deliveryStatus: (fulfillment === "delivery" ? "pending" : undefined) as DeliveryStatus | undefined,
     deliveryPartner: delivery?.provider,
     trackingUrl: delivery?.trackingUrl,
     borzoOrderId: delivery?.deliveryId || null,

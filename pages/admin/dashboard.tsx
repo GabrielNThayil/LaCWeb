@@ -32,16 +32,27 @@ interface OrderItem {
 interface AdminOrder {
   id: string;
   confirmationId: string;
+  razorpayOrderId: string;
+  razorpayPaymentId: string;
   customerName: string;
   customerPhone: string;
+  customerEmail?: string;
   customerAddress?: string;
+  customerLandmark?: string;
   fulfillment: "delivery" | "pickup";
   timing: string;
+  instructions?: string;
   items: OrderItem[];
+  subtotal: number;
+  packagingFee: number;
+  deliveryFee: number;
   total: number;
+  paymentAmount: number;
   status: OrderStatus;
   deliveryStatus?: DeliveryStatus;
+  deliveryPartner?: string;
   trackingUrl?: string | null;
+  borzoOrderId?: string | null;
   notes?: string;
   createdAt: string;
   updatedAt: string;
