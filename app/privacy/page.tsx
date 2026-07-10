@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { Shield, Lock, Eye, FileText, Globe } from 'lucide-react';
+import { Logo } from '@/components/Logo';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy | La Couronne Cafe',
@@ -14,10 +15,7 @@ export default function PrivacyPage() {
       <header className="border-b border-crown-espresso/10 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl">👑</span>
-            <span className="font-display text-xl font-semibold text-crown-espresso">
-              La Couronne
-            </span>
+            <Logo height={28} />
           </Link>
           <Link href="/" className="text-sm text-crown-espresso/60 hover:text-crown-espresso">
             ← Back to site

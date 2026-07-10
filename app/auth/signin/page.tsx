@@ -4,6 +4,7 @@ import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Logo } from "@/components/Logo";
 
 export default function SignInPage() {
   const router = useRouter();
@@ -40,12 +41,10 @@ export default function SignInPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#FAFAF8] px-4">
       <div className="w-full max-w-sm">
-        <div className="mb-12 text-center">
-          <h1 className="text-2xl font-light tracking-wide text-stone-800 mb-2">
-            La Couronne
-          </h1>
-          <p className="text-sm text-stone-500">Welcome back</p>
+        <div className="mb-12 flex justify-center">
+          <Logo height={48} />
         </div>
+        <p className="text-sm text-stone-500 text-center">Welcome back</p>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           {error && (

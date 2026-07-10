@@ -8,6 +8,7 @@ import MoodRecommender from "../components/MoodRecommender";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { getUserOrders, getUserPreferences, updateUserPreferences } from "@/lib/storage";
 import { PLACEHOLDERS } from "@/lib/blurs";
+import { Logo } from "@/components/Logo";
 import { MenuItem } from "@/types/menuTypes";
 import {
   AnimatePresence,
@@ -385,10 +386,7 @@ export default function Home() {
           >
             <div className="min-w-[280px] rounded-[2rem] border border-crown-gold/25 bg-white/45 p-8 shadow-glow backdrop-blur-2xl">
               <div className="mb-6 flex items-center gap-3">
-                <Crown className="h-8 w-8 text-crown-gold" />
-                <span className="font-display text-3xl font-semibold">
-                  La Couronne
-                </span>
+                <Logo height={48} />
               </div>
               <div className="space-y-3">
                 <div className="shimmer h-4 rounded-full bg-crown-gold/20" />
@@ -409,12 +407,7 @@ export default function Home() {
       >
         <div className="flex w-full items-center justify-between gap-4">
           <a href="#home" className="flex items-center gap-2">
-            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-crown-espresso text-crown-honey">
-              <Crown className="h-5 w-5" />
-            </span>
-            <span className="hidden lg:inline font-display text-2xl font-semibold leading-none">
-              La Couronne
-            </span>
+            <Logo height={36} />
           </a>
           <div className="hidden lg:flex items-center gap-1">
             {/* Dynamic nav items with auth */}
@@ -1229,10 +1222,7 @@ export default function Home() {
         <div className="mx-auto grid max-w-7xl gap-8 text-crown-espresso/88 md:grid-cols-[1.2fr_.8fr_.8fr]">
           <div>
             <div className="flex items-center gap-3">
-              <Crown className="h-6 w-6 text-crown-gold" />
-              <span className="font-display text-3xl font-semibold text-crown-espresso">
-                La Couronne Cafe
-              </span>
+              <Logo height={40} />
             </div>
             <p className="mt-4 max-w-md leading-7">
               {business.address}

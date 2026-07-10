@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Menu, X, ArrowRight, MapPin } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { Logo } from "@/components/Logo";
 
 const navItems = [
   { label: "Menu", href: "#menu" },
@@ -54,24 +55,7 @@ export default function MobileNav() {
         <div className="flex items-center justify-between gap-3">
           {/* Logo */}
           <Link href="#home" className="flex items-center gap-2" onClick={closeMenu}>
-            <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-crown-espresso text-crown-honey">
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7z" />
-                <path d="M5 20h14" />
-              </svg>
-            </div>
-            <span className="font-display text-xl font-semibold text-crown-espresso">
-              La Couronne
-            </span>
+            <Logo height={40} />
           </Link>
 
           {/* Right side: Theme + CTA */}
