@@ -62,7 +62,9 @@ type RazorpayConstructor = new (options: {
   modal: { ondismiss: () => void };
 }) => { open: () => void };
 
-const filters: Filter[] = ["All", "Coffee", "Bakes", "Brunch", "Desserts", "Drinks"];
+const filters: Filter[] = ["Coffee", "Bakes", "Brunch", "Desserts", "Drinks"];
+// "All" is removed — too many items (130+). Users navigate via category tabs.
+const PAGE_SIZE = 12; // show 12 items per category before "Show more"
 const scheduleOptions = [
   "ASAP",
   "Today, 12:30 PM",
@@ -73,7 +75,8 @@ const scheduleOptions = [
 const storageKey = "la-couronne-cart";
 
 export default function OrderingModule() {
-  const [filter, setFilter] = useState<Filter>("All");
+  const [filter, setFilter] = useState<Filter>("Coffee");
+  const [page, setPage] = useState(0);
   const [cart, setCart] = useState<Record<string, number>>({});
   const [fulfillment, setFulfillment] = useState<Fulfillment>("delivery");
   const [name, setName] = useState("");
@@ -172,13 +175,10 @@ export default function OrderingModule() {
     window.localStorage.setItem(storageKey, JSON.stringify(cart));
   }, [cart]);
 
-  const visibleItems = useMemo(
-    () =>
-      filter === "All"
-        ? orderMenu
-        : orderMenu.filter((item) => item.category === filter),
-    [filter]
-  );
+  const visibleItems = useMemo(() => {
+    const items = orderMenu.filter((item) => item.category === filter);
+    return items.slice(0, (page + 1) * PAGE_SIZE);
+  }, [filter, page]);
 
   const cartItems = useMemo(
     () =>
@@ -470,7 +470,7 @@ export default function OrderingModule() {
                 <button
                   key={item}
                   type="button"
-                  onClick={() => setFilter(item)}
+                  onClick={() => { setFilter(item); setPage(0); }}
                   className={`rounded-full border px-5 py-3 text-sm font-semibold transition duration-300 ${
                     filter === item
                       ? "border-crown-espresso bg-crown-espresso text-crown-paper"
@@ -481,6 +481,11 @@ export default function OrderingModule() {
                 </button>
               ))}
             </div>
+            {(() => {
+              const categoryItems = orderMenu.filter((i) => i.category === filter);
+              const hasMore = visibleItems.length < categoryItems.length;
+              return (
+                <>
             <motion.div layout className="grid gap-4 sm:grid-cols-2">
               <AnimatePresence mode="popLayout">
                 {visibleItems.map((item) => (
@@ -557,6 +562,22 @@ export default function OrderingModule() {
                 ))}
               </AnimatePresence>
             </motion.div>
+            {hasMore ? (
+                <button
+                  type="button"
+                  onClick={() => setPage((p) => p + 1)}
+                  className="mt-5 w-full rounded-2xl border border-crown-espresso/25 bg-white/80 py-3 text-sm font-semibold text-crown-espresso transition hover:bg-white"
+                >
+                  Show more {categoryItems.length - visibleItems.length} more {filter} items
+                </button>
+              ) : (
+                <p className="mt-4 text-center text-xs text-crown-espresso/55">
+                  All {categoryItems.length} {filter} items shown
+                </p>
+              )}
+                </>
+              );
+            })()}
           </div>
 
           <div id="checkout" className="lg:sticky lg:top-24 lg:self-start">
