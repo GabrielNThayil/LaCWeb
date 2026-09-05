@@ -6,4 +6,7 @@ node_modules/
 # Local development logs
 *.log
 
+# TypeScript incremental build cache
+*.tsbuildinfo
+
 .vercel

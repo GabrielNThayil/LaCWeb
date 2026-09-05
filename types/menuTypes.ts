@@ -33,6 +33,8 @@ export interface MenuApiResponse {
   lastUpdated: string;
   categories: MenuCategory[];
   items: MenuItem[];
+  /** Item IDs surfaced in the "Bestsellers" rail, in display order. */
+  bestsellers?: string[];
 }
 
 // Helper: get items by category

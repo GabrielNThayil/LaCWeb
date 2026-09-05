@@ -24,12 +24,17 @@ Our modern tech stack enables a fast, responsive, and personalized user experien
 
 ## 📁 Project Structure
 ```bash
-src/
-├── components/ # UI components
-├── pages/ # Page components
-├── lib/ # Shared utilities
-├── public/ # Static assets
-├── styles/ # CSS configurations
+.
+├── app/                 # App Router (Next.js 14) — pages, layouts, route handlers
+├── pages/               # Legacy Pages Router leftovers: admin/dashboard + api/menu
+├── components/          # UI components
+├── lib/                 # Shared utilities
+├── data/                # menu.json (menu source of truth)
+├── types/               # Shared TS types
+├── styles/              # globals.css, animations.css, cursors.css
+├── public/              # Static assets (logo, etc.)
+├── menu/                # Source spreadsheet for menu.json
+└── middleware.ts        # Auth gate on /admin/:path*
 ```
 
 ---

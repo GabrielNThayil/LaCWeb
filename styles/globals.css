@@ -3,14 +3,16 @@ html {
   cursor: default;
 }
 
-/* Default Cursor */
+/* Default Cursor — the original cursor URLs pointed at cdn.example.com
+   (placeholder, never resolves), so the cursor effectively reverted to default.
+   Removed those dead URLs; the themed states live in styles/cursors.css. */
 body {
-  cursor: url('https://cdn.example.com/custom-cursor.svg'), auto;
+  cursor: default;
 }
 
 /* Hover Effects */
 .btn:hover {
-  cursor: url('https://cdn.example.com/grabbing.svg'), auto;
+  cursor: pointer;
 }
 
 /* Responsive Cursor Adjustments */

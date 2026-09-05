@@ -3,6 +3,8 @@ import "./globals.css";
 import { SessionWrapper } from "./session-provider";
 import CookieConsent from "@/components/CookieConsent";
 import MobileNav from "@/components/MobileNav";
+import AISommelier from "@/components/AISommelier";
+import LiveRail from "@/components/LiveRail";
 
 export const metadata: Metadata = {
   title: "La Couronne Cafe Bengaluru | Patisserie, Private Space & Cafe",
@@ -36,11 +38,13 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body>
+        <LiveRail />
         <SessionWrapper>
           <MobileNav />
           {children}
         </SessionWrapper>
         <CookieConsent />
+        <AISommelier />
       </body>
     </html>
   );

@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ai-sdk/react": "^4.0.94",
+    "ai": "^7.0.91",
     "framer-motion": "^11.18.2",
     "lucide-react": "^0.468.0",
     "next": "^14.2.23",

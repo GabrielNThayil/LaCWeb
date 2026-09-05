@@ -1,6 +1,16 @@
 {
-  "version": "2.0.0",
-  "lastUpdated": "2026-07-01",
+  "version": "2.1.0",
+  "lastUpdated": "2026-08-31",
+  "bestsellers": [
+    "white-rose-mocha",
+    "golden-turmeric-latte",
+    "pistachio-latte",
+    "matcha-latte-cold",
+    "pistachio-croissant",
+    "dubai-chocolate-croissantkunafapistachio",
+    "tiramisu-croissant",
+    "butter-croissant"
+  ],
   "categories": [
     {
       "id": "coffee",
@@ -40,35 +50,7 @@
       "prepTime": "5 min",
       "featured": false,
       "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "americano",
-      "name": "AMERICANO",
-      "description": "Espresso pulled over hot filtered water. Clean, crisp, and balanced.",
-      "price": 260,
-      "category": "coffee",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "capuccino",
-      "name": "CAPUCCINO",
-      "description": "Espresso, steamed milk, and velvety foam. Timeless and balanced.",
-      "price": 280,
-      "category": "coffee",
-      "dietaryTags": [],
-      "allergens": [
-        "dairy"
-      ],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
+      "unsplashImage": "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=800&auto=format&fit=crop&q=60"
     },
     {
       "id": "latte",
@@ -83,52 +65,7 @@
       "prepTime": "5 min",
       "featured": true,
       "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "flat-white",
-      "name": "FLAT WHITE",
-      "description": "Espresso with silky microfoam. Velvety, rich, and balanced.",
-      "price": 320,
-      "category": "coffee",
-      "dietaryTags": [],
-      "allergens": [
-        "dairy"
-      ],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "cortado",
-      "name": "CORTADO",
-      "description": "Equal parts espresso and warm milk. Bold yet mellow.",
-      "price": 300,
-      "category": "coffee",
-      "dietaryTags": [],
-      "allergens": [
-        "dairy"
-      ],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "macchiato",
-      "name": "MACCHIATO",
-      "description": "Espresso marked with a touch of velvety foam. Intense and rich.",
-      "price": 270,
-      "category": "coffee",
-      "dietaryTags": [],
-      "allergens": [
-        "dairy"
-      ],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
+      "unsplashImage": "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=800&auto=format&fit=crop&q=60"
     },
     {
       "id": "mocha",
@@ -138,13 +75,12 @@
       "category": "coffee",
       "dietaryTags": [],
       "allergens": [
-        "dairy",
         "dairy"
       ],
       "prepTime": "5 min",
       "featured": true,
       "localImage": null,
-      "unsplashImage": null
+      "unsplashImage": "https://images.unsplash.com/photo-1578054265202-1fe70cc05a27?w=800&auto=format&fit=crop&q=60"
     },
     {
       "id": "white-rose-mocha",
@@ -159,97 +95,7 @@
       "prepTime": "5 min",
       "featured": true,
       "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "spanish-latte",
-      "name": "SPANISH LATTE",
-      "description": "Espresso with sweet condensed milk. Rich, velvety, and indulgent.",
-      "price": 330,
-      "category": "coffee",
-      "dietaryTags": [],
-      "allergens": [
-        "dairy"
-      ],
-      "prepTime": "5 min",
-      "featured": true,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "cinnanut-latte",
-      "name": "CINNANUT LATTE",
-      "description": "Espresso with cinnamon and hazelnut. Smooth, aromatic, and warming.",
-      "price": 330,
-      "category": "coffee",
-      "dietaryTags": [],
-      "allergens": [
-        "dairy"
-      ],
-      "prepTime": "5 min",
-      "featured": true,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "hot-caramel-latte",
-      "name": "HOT CARAMEL LATTE",
-      "description": "Espresso with steamed milk and buttery caramel. Sweet and velvety.",
-      "price": 350,
-      "category": "coffee",
-      "dietaryTags": [],
-      "allergens": [
-        "dairy"
-      ],
-      "prepTime": "5 min",
-      "featured": true,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "pistachio-capuccino",
-      "name": "PISTACHIO CAPUCCINO",
-      "description": "Espresso and pistachio paste cappuccino, finished with crushed pistachios.",
-      "price": 350,
-      "category": "coffee",
-      "dietaryTags": [],
-      "allergens": [
-        "dairy"
-      ],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "hot-chocolate",
-      "name": "HOT CHOCOLATE",
-      "description": "Couverture chocolate with cream, milk, cinnamon, and cocoa. Rich and velvety.",
-      "price": 350,
-      "category": "coffee",
-      "dietaryTags": [],
-      "allergens": [
-        "dairy"
-      ],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "lavender-hot-chocolate",
-      "name": "LAVENDER HOT CHOCOLATE",
-      "description": "Couverture hot chocolate infused with lavender, topped with whipped cream.",
-      "price": 400,
-      "category": "coffee",
-      "dietaryTags": [],
-      "allergens": [
-        "dairy"
-      ],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
+      "unsplashImage": "https://images.unsplash.com/photo-1551030173-122aabc4489c?w=800&auto=format&fit=crop&q=60"
     },
     {
       "id": "golden-turmeric-latte",
@@ -264,7 +110,7 @@
       "prepTime": "5 min",
       "featured": true,
       "localImage": null,
-      "unsplashImage": null
+      "unsplashImage": "https://images.unsplash.com/photo-1627435601361-ec25f5b1d0e5?w=800&auto=format&fit=crop&q=60"
     },
     {
       "id": "green-tea",
@@ -277,7 +123,7 @@
       "prepTime": "5 min",
       "featured": false,
       "localImage": null,
-      "unsplashImage": null
+      "unsplashImage": "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=800&auto=format&fit=crop&q=60"
     },
     {
       "id": "lemon-tea",
@@ -290,98 +136,7 @@
       "prepTime": "5 min",
       "featured": false,
       "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "black-tea",
-      "name": "BLACK TEA",
-      "description": "Premium black tea with hot filtered water. Bold and aromatic.",
-      "price": 250,
-      "category": "coffee",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "earl-grey-tea",
-      "name": "EARL GREY TEA",
-      "description": "Earl grey black tea with lemon and honey. Citrusy and elegant.",
-      "price": 280,
-      "category": "coffee",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "blue-pea-tea",
-      "name": "BLUE PEA TEA",
-      "description": "Organic dried blue pea flowers. Antioxidant-rich, floral, and visually stunning.",
-      "price": 280,
-      "category": "coffee",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "hibiscus-tea",
-      "name": "HIBISCUS TEA",
-      "description": "Organic dried hibiscus. Antioxidant-rich, tart, and naturally floral.",
-      "price": 280,
-      "category": "coffee",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "chamomile-tea",
-      "name": "CHAMOMILE TEA",
-      "description": "Organic dried chamomile. Calming, anti-inflammatory, and gently floral.",
-      "price": 280,
-      "category": "coffee",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "lavender-tea",
-      "name": "LAVENDER TEA",
-      "description": "Organic dried lavender. Soothing, stress-relieving, and naturally aromatic.",
-      "price": 280,
-      "category": "coffee",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "cold-americano",
-      "name": "COLD AMERICANO",
-      "description": "Bold espresso over chilled filtered water and ice. Crisp and clean.",
-      "price": 300,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
+      "unsplashImage": "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=800&auto=format&fit=crop&q=60"
     },
     {
       "id": "cold-latte",
@@ -396,35 +151,7 @@
       "prepTime": "5 min",
       "featured": true,
       "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "chilly-guava-fizz",
-      "name": "CHILLY GUAVA FIZZ",
-      "description": "Espresso and guava fizz rimmed with chilli powder. Bold and fruity.",
-      "price": 350,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [
-        "dairy"
-      ],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "tropical-heat-brew",
-      "name": "TROPICAL HEAT BREW",
-      "description": "Espresso and pineapple fizz rimmed with chilli powder. Tropical and vibrant.",
-      "price": 350,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
+      "unsplashImage": "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=800&auto=format&fit=crop&q=60"
     },
     {
       "id": "pistachio-latte",
@@ -440,37 +167,7 @@
       "prepTime": "5 min",
       "featured": true,
       "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "caramel-macchiato",
-      "name": "CARAMEL MACCHIATO",
-      "description": "Espresso layered with steamed milk and buttery caramel drizzle.",
-      "price": 330,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [
-        "dairy"
-      ],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "spanish-cold-latte",
-      "name": "SPANISH COLD LATTE",
-      "description": "Espresso with chilled milk and condensed milk over ice. Velvety and indulgent.",
-      "price": 330,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [
-        "dairy"
-      ],
-      "prepTime": "5 min",
-      "featured": true,
-      "localImage": null,
-      "unsplashImage": null
+      "unsplashImage": "https://images.unsplash.com/photo-1585168364628-249f1f3d9b79?w=800&auto=format&fit=crop&q=60"
     },
     {
       "id": "salted-caramel-latte",
@@ -485,65 +182,7 @@
       "prepTime": "5 min",
       "featured": true,
       "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "ferrero-rocher-latte",
-      "name": "FERRERO ROCHER LATTE",
-      "description": "Espresso with steamed milk and hazelnut chocolate blend. Nutty and velvety.",
-      "price": 350,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": true,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "mont-blanc",
-      "name": "MONT BLANC",
-      "description": "Espresso with freshly squeezed orange juice, cold foam, and aromatic nutmeg.",
-      "price": 350,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [
-        "dairy"
-      ],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "classic-frappe-cold-coffee",
-      "name": "CLASSIC FRAPPE /COLD COFFEE",
-      "description": "Premium espresso and fresh milk blended chilled, topped with whipped cream.",
-      "price": 380,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [
-        "dairy"
-      ],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "hazelnut-frappe-hazelnut-cold-coffee",
-      "name": "HAZELNUT FRAPPE / HAZELNUT COLD COFFEE",
-      "description": "Premium espresso and imported hazelnut syrup blended chilled. Nutty and rich.",
-      "price": 380,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [
-        "dairy"
-      ],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
+      "unsplashImage": "https://images.unsplash.com/photo-1485808191679-5f86510681a8?w=800&auto=format&fit=crop&q=60"
     },
     {
       "id": "mocha-frappe-",
@@ -561,109 +200,6 @@
       "unsplashImage": null
     },
     {
-      "id": "nutella-frappe",
-      "name": "NUTELLA FRAPPE",
-      "description": "Premium espresso and rich Nutella blended chilled. Decadent chocolate-hazelnut.",
-      "price": 400,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [
-        "dairy",
-        "nuts"
-      ],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "matcha-frappe",
-      "name": "MATCHA FRAPPE",
-      "description": "Ceremonial grade AA Japanese Matcha and fresh milk blended chilled. Earthy and vibrant.",
-      "price": 400,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "chocolate-frappe",
-      "name": "CHOCOLATE FRAPPE",
-      "description": "Premium chocolate syrup and fresh milk blended chilled. Velvety and indulgent.",
-      "price": 350,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [
-        "dairy",
-        "nuts"
-      ],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "strawberry-frappe",
-      "name": "STRAWBERRY FRAPPE",
-      "description": "Premium imported strawberry crush blended chilled. Fruity and creamy.",
-      "price": 350,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [
-        "dairy"
-      ],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "mango-frappe",
-      "name": "MANGO FRAPPE",
-      "description": "Premium mango crush blended chilled. Tropical and creamy.",
-      "price": 350,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [
-        "dairy"
-      ],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "salted-caramel-frappe",
-      "name": "SALTED CARAMEL FRAPPE",
-      "description": "Premium caramel syrup and espresso blended chilled, finished with sea salt.",
-      "price": 350,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [
-        "dairy"
-      ],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "mango-matcha-cold",
-      "name": "MANGO MATCHA COLD",
-      "description": "Ceremonial grade AA Japanese Matcha whisked with luscious mango and chilled milk. Smooth, creamy, and tropical.",
-      "price": 400,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
       "id": "matcha-latte-cold",
       "name": "MATCHA LATTE COLD",
       "description": "Ceremonial grade AA Japanese Matcha whisked with steamed milk and silky microfoam. Smooth, creamy, and earthy.",
@@ -673,162 +209,6 @@
       "allergens": [],
       "prepTime": "5 min",
       "featured": true,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "strawberry-matcha-",
-      "name": "STRAWBERRY MATCHA  ",
-      "description": "Ceremonial grade AA Japanese Matcha whisked with sweet strawberry and chilled milk. Creamy and delicately fruity.",
-      "price": 400,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "banana-matcha-",
-      "name": "BANANA MATCHA  ",
-      "description": "Ceremonial grade AA Japanese Matcha whisked with rich banana and chilled milk. Smooth and tropical.",
-      "price": 400,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "strawberry-matcha-cloud",
-      "name": "STRAWBERRY MATCHA CLOUD",
-      "description": "Ceremonial grade AA Japanese Matcha layered with sweet strawberry, topped with velvety cloud foam. Vibrant and visually stunning.",
-      "price": 420,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "mango-matcha-cloud",
-      "name": "MANGO MATCHA CLOUD",
-      "description": "Ceremonial grade AA Japanese Matcha layered with luscious mango, topped with velvety cloud foam. Tropical and visually stunning.",
-      "price": 420,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "banana-matcha-cloud",
-      "name": "BANANA MATCHA CLOUD",
-      "description": "Ceremonial grade AA Japanese Matcha layered with rich banana, topped with velvety cloud foam. Smooth and tropical.",
-      "price": 420,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "blue-pea-matcha-cloud",
-      "name": "BLUE PEA MATCHA CLOUD",
-      "description": "Ceremonial grade AA Japanese Matcha layered with antioxidant-rich blue pea, topped with velvety cloud foam. Floral and stunning.",
-      "price": 420,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "matcha-lattecold",
-      "name": "MATCHA LATTE{COLD}",
-      "description": "Ceremonial grade AA Japanese Matcha whisked with steamed milk and silky microfoam. Smooth, creamy, and richly earthy.",
-      "price": 420,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": true,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "ube-matcha-cloud",
-      "name": "UBE MATCHA CLOUD",
-      "description": "Imported Philippine Ube layered with ceremonial grade AA Japanese Matcha, topped with cloud foam. Anthocyanin-rich, anti-ageing, and visually stunning.",
-      "price": 500,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "ube-latte",
-      "name": "ube latte",
-      "description": "Imported Philippine Ube with espresso and steamed milk. Naturally rich in anthocyanins and antioxidants — velvety, subtly sweet, and nourishing.",
-      "price": 500,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "ube-spanish-latte",
-      "name": "ube spanish latte",
-      "description": "Imported Philippine Ube with espresso and condensed milk over ice. Anthocyanin-rich, anti-ageing, and indulgently balanced.",
-      "price": 500,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "strawberry-spark-mocktail",
-      "name": "STRAWBERRY SPARK MOCKTAIL",
-      "description": "Sweet strawberry with shimmering edible glitter. Vibrant and magical.",
-      "price": 300,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "blue-pea-magic-cooler",
-      "name": "BLUE PEA MAGIC COOLER",
-      "description": "Blue pea mocktail that transforms colour on contact. Light and refreshing.",
-      "price": 350,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
       "localImage": null,
       "unsplashImage": null
     },
@@ -843,145 +223,22 @@
       "prepTime": "5 min",
       "featured": false,
       "localImage": null,
-      "unsplashImage": null
+      "unsplashImage": "https://images.unsplash.com/photo-1544145945-f90425340c7e?w=800&auto=format&fit=crop&q=60"
     },
     {
-      "id": "tropical-paradise",
-      "name": "TROPICAL PARADISE",
-      "description": "Juicy pineapple and crisp soda. Sparkling and tropical.",
-      "price": 300,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "litchi-rose",
-      "name": "LITCHI ROSE",
-      "description": "Sweet lychee and fragrant rose. Light, aromatic, and balanced.",
-      "price": 350,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "beetroot-millet-granola-bowl",
-      "name": "BEETROOT MILLET GRANOLA BOWL",
-      "description": "Beetroot — rich in nitrates, betalains, iron, and antioxidants. Supports circulation, stamina, detox, and glowing skin.",
-      "price": 400,
+      "id": "butter-croissant",
+      "name": "BUTTER CROISSANT",
+      "description": "Eggless flaky buttery layers baked to a crisp golden finish. Classic French viennoiserie.",
+      "price": 250,
       "category": "brunch",
       "dietaryTags": [
         "vegetarian"
       ],
       "allergens": [],
       "prepTime": "5 min",
-      "featured": false,
+      "featured": true,
       "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "turmeric-pina-colada-millet-granola-bowl",
-      "name": "TURMERIC PINA COLADA MILLET GRANOLA BOWL",
-      "description": "Turmeric and pineapple — rich in curcumin, vitamin c, and antioxidants. Supports immunity, digestion, and natural skin glow.",
-      "price": 400,
-      "category": "brunch",
-      "dietaryTags": [
-        "vegetarian"
-      ],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "chocolate-millet-granola",
-      "name": "CHOCOLATE MILLET GRANOLA",
-      "description": "Cocoa and dark chocolate — rich in antioxidants and magnesium. Supports brain function, mood, and muscle recovery. No refined sugar.",
-      "price": 400,
-      "category": "brunch",
-      "dietaryTags": [
-        "vegetarian"
-      ],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "spirulina-ocean-millet-granola-bowl",
-      "name": "SPIRULINA OCEAN MILLET GRANOLA BOWL",
-      "description": "Spirulina — rich in plant protein, chlorophyll, phycocyanin, and b vitamins. Supports cellular recovery, immunity, and sustained energy.",
-      "price": 500,
-      "category": "brunch",
-      "dietaryTags": [
-        "vegetarian"
-      ],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "blue-pea-millet-granola-bowl",
-      "name": "BLUE PEA  MILLET GRANOLA BOWL",
-      "description": "Blue pea — rich in anthocyanins and antioxidants. Supports skin health, collagen, natural glow, and brain function.",
-      "price": 450,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "moringa-millet-granola-bowl",
-      "name": "MORINGA MILLET GRANOLA BOWL",
-      "description": "Moringa — rich in plant protein, bioavailable iron, calcium, and chlorophyll. Supports immunity, detox, and skin vitality.",
-      "price": 450,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "matcha-millet-granola-bowl",
-      "name": "MATCHA MILLET GRANOLA BOWL",
-      "description": "Matcha — rich in egcg, catechins, l-theanine, and chlorophyll. Supports anti-ageing, skin glow, focus, and clean energy.",
-      "price": 500,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "high-protien-smothie-bowl-natural-protein",
-      "name": "High Protien Smothie Bowl- Natural Protein",
-      "description": "High-protein bowl with natural superfoods and seeds. Supports skin health, muscle recovery, gut health, and sustained energy.",
-      "price": 450,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
+      "unsplashImage": "https://images.unsplash.com/photo-1623334044303-241021148842?w=800&auto=format&fit=crop&q=60"
     },
     {
       "id": "korean-cheese-buns",
@@ -996,7 +253,7 @@
       "prepTime": "5 min",
       "featured": false,
       "localImage": null,
-      "unsplashImage": null
+      "unsplashImage": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&auto=format&fit=crop&q=60"
     },
     {
       "id": "veg-burger",
@@ -1011,7 +268,7 @@
       "prepTime": "5 min",
       "featured": false,
       "localImage": null,
-      "unsplashImage": null
+      "unsplashImage": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&auto=format&fit=crop&q=60"
     },
     {
       "id": "italian-classic-veg-pizza",
@@ -1026,121 +283,7 @@
       "prepTime": "5 min",
       "featured": false,
       "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "margherita-pizza",
-      "name": "Margherita Pizza",
-      "description": "Eggless thin crust with in-house tomato sauce, mozzarella, fresh basil, and olive oil.",
-      "price": 380,
-      "category": "brunch",
-      "dietaryTags": [
-        "vegetarian"
-      ],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "pesto-pizza",
-      "name": "PESTO PIZZA",
-      "description": "Eggless thin crust with in-house pesto, mozzarella, cottage cheese, capsicum, and fresh basil.",
-      "price": 450,
-      "category": "brunch",
-      "dietaryTags": [
-        "vegetarian"
-      ],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "multi-grain-beetroot-bagel-sandwich",
-      "name": "MULTI GRAIN BEETROOT BAGEL SANDWICH",
-      "description": "Eggless beetroot multigrain bagel with house burger sauce, pickled onions, cucumber, and cheese.",
-      "price": 400,
-      "category": "brunch",
-      "dietaryTags": [
-        "vegetarian"
-      ],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "bagel-sandwich",
-      "name": "BAGEL SANDWICH",
-      "description": "Eggless sesame bagel with smooth cream cheese frosting. Nutty, creamy, and artisan.",
-      "price": 400,
-      "category": "brunch",
-      "dietaryTags": [
-        "vegetarian"
-      ],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "bagels-with-sunnyside-eggs",
-      "name": "Bagels with Sunnyside Eggs",
-      "description": "Toasted bagel with perfectly cooked sunny side up eggs. Wholesome and satisfying.",
-      "price": 380,
-      "category": "brunch",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "croissant-sandwich-with-indian-cottage-cheese",
-      "name": "CROISSANT SANDWICH WITH INDIAN COTTAGE CHEESE",
-      "description": "Golden flaky eggless croissant with house burger sauce, pickled vegetables, sautéed cottage cheese, and melted cheese.",
-      "price": 400,
-      "category": "brunch",
-      "dietaryTags": [
-        "vegetarian"
-      ],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": true,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "croissant-sandwith-with-egg",
-      "name": "CROISSANT SANDWITH WITH EGG",
-      "description": "Golden flaky croissant with house burger sauce, pickled vegetables, egg, and melted cheese.",
-      "price": 450,
-      "category": "brunch",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": true,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "croissant-sandwich-with-scrambled-egg-pesto-suace-",
-      "name": "Croissant Sandwich (with Scrambled Egg+ Pesto Suace) with Burger Suace",
-      "description": "Flaky croissant with in-house pesto, pickled vegetables, and choice of egg.",
-      "price": 500,
-      "category": "brunch",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
+      "unsplashImage": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&auto=format&fit=crop&q=60"
     },
     {
       "id": "croissant-sandwich-with-gourmet-pesto-sauce",
@@ -1170,29 +313,14 @@
       "prepTime": "5 min",
       "featured": false,
       "localImage": null,
-      "unsplashImage": null
+      "unsplashImage": "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=800&auto=format&fit=crop&q=60"
     },
     {
-      "id": "sphagetti",
-      "name": "SPHAGETTI",
-      "description": "Spaghetti in fragrant in-house basil pesto. Simple, elegant, and satisfying.",
-      "price": 500,
+      "id": "brioche-banana-toast",
+      "name": "BRIOCHE BANANA TOAST",
+      "description": "Golden brioche with caramelised banana, whipped cream, granola, and caramel sauce.",
+      "price": 380,
       "category": "brunch",
-      "dietaryTags": [
-        "vegetarian"
-      ],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "pain-au-chocolat",
-      "name": "PAIN AU CHOCOLAT",
-      "description": "Flaky buttery layers with imported premium dark couverture chocolate. Crisp and golden.",
-      "price": 280,
-      "category": "desserts",
       "dietaryTags": [],
       "allergens": [],
       "prepTime": "5 min",
@@ -1201,17 +329,15 @@
       "unsplashImage": null
     },
     {
-      "id": "butter-croissant",
-      "name": "BUTTER CROISSANT",
-      "description": "Eggless flaky buttery layers baked to a crisp golden finish. Classic French viennoiserie.",
-      "price": 250,
+      "id": "high-protein-egg-white-omlettes",
+      "name": "HIGH PROTEIN EGG WHITE OMLETTES",
+      "description": "Fresh egg white omelette with vegetables and sprouts. High-protein, low-calorie, and nourishing.",
+      "price": 300,
       "category": "brunch",
-      "dietaryTags": [
-        "vegetarian"
-      ],
+      "dietaryTags": [],
       "allergens": [],
       "prepTime": "5 min",
-      "featured": true,
+      "featured": false,
       "localImage": null,
       "unsplashImage": null
     },
@@ -1228,43 +354,13 @@
       "prepTime": "5 min",
       "featured": true,
       "localImage": null,
-      "unsplashImage": null
+      "unsplashImage": "https://images.unsplash.com/photo-1585168364628-249f1f3d9b79?w=800&auto=format&fit=crop&q=60"
     },
     {
       "id": "pistachio-croissant",
       "name": "PISTACHIO CROISSANT",
       "description": "Flaky buttery croissant with luxurious pistachio cream and crushed pistachios.",
       "price": 500,
-      "category": "desserts",
-      "dietaryTags": [
-        "vegetarian"
-      ],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": true,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "ferraro-rocher-croissantnutelladark-chocolatehazel",
-      "name": "FERRARO ROCHER CROISSANT{NUTELLA+DARK CHOCOLATE+HAZELNUT}",
-      "description": "Flaky croissant with Nutella ganache, silky cream, and crushed hazelnuts. Served with a Ferrero Rocher.",
-      "price": 500,
-      "category": "desserts",
-      "dietaryTags": [
-        "vegetarian"
-      ],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": true,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "banoffee-croissantsalted-caramelbanana",
-      "name": "BANOFFEE CROISSANT{SALTED CARAMEL+BANANA}",
-      "description": "Flaky croissant with banana whipped cream and dulce de leche, dusted with cocoa.",
-      "price": 450,
       "category": "desserts",
       "dietaryTags": [
         "vegetarian"
@@ -1288,7 +384,7 @@
       "prepTime": "5 min",
       "featured": true,
       "localImage": null,
-      "unsplashImage": null
+      "unsplashImage": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=800&auto=format&fit=crop&q=60"
     },
     {
       "id": "tiramisu-croissant",
@@ -1316,430 +412,7 @@
       "prepTime": "5 min",
       "featured": false,
       "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "milk-chocolate-brownie",
-      "name": "MILK CHOCOLATE BROWNIE",
-      "description": "Eggless premium couverture milk chocolate brownie with silky milk chocolate ganache. Soft and fudgy.",
-      "price": 250,
-      "category": "desserts",
-      "dietaryTags": [
-        "vegetarian"
-      ],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "banana-chocochip-muffins",
-      "name": "BANANA CHOCOCHIP MUFFINS",
-      "description": "Eggless banana choco chip muffin with 20% oat flour for fibre. Moist and naturally sweet.",
-      "price": 250,
-      "category": "desserts",
-      "dietaryTags": [
-        "vegetarian"
-      ],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "apple-cinnamon-rolls",
-      "name": "APPLE CINNAMON ROLLS",
-      "description": "Eggless soft fluffy dough with warm apple-cinnamon filling, baked golden and dusted with icing sugar.",
-      "price": 250,
-      "category": "desserts",
-      "dietaryTags": [
-        "vegetarian"
-      ],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "pistachio-kunafa",
-      "name": "PISTACHIO KUNAFA",
-      "description": "Roasted Kunafa with cheese and rose essence, finished with crushed pistachios and rose syrup.",
-      "price": 400,
-      "category": "desserts",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "newyork-styled-salted-caramel-cheesecake",
-      "name": "NEWYORK STYLED SALTED CARAMEL CHEESECAKE",
-      "description": "New york cheesecake with egg, premium cream cheese, white chocolate, and salted caramel ribbons.",
-      "price": 350,
-      "category": "desserts",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "san-sebastian-basque-burnt-cheesecake-",
-      "name": "SAN SEBASTIAN BASQUE BURNT CHEESECAKE ",
-      "description": "Basque burnt cheesecake with egg and premium cream cheese. Caramelised top, luxuriously creamy centre.",
-      "price": 400,
-      "category": "desserts",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "dark-chocolate-ganachetriple-chocolate-ganachepist",
-      "name": "DARK CHOCOLATE GANACHE/TRIPLE CHOCOLATE GANACHE/PISTACHIO GANACHE",
-      "description": "Available with your choice of:\r\n• Pure dark chocolate ganache\r\n• Triple chocolate ganache\r\n• Pistachio ganache finished with crushed pistachios",
-      "price": 400,
-      "category": "desserts",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "macaronslavendersalted-caramel-3-nos",
-      "name": "MACARONS{LAVENDER+SALTED CARAMEL]- 3 Nos",
-      "description": "Lavender macaron with white chocolate ganache and salted caramel filling.",
-      "price": 350,
-      "category": "desserts",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "macaronscoffee-nutella-3-nos",
-      "name": "MACARONS{COFFEE +NUTELLA}- 3 Nos",
-      "description": "Coffee macaron with dark chocolate ganache and Nutella filling.",
-      "price": 350,
-      "category": "desserts",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "macaronspina-colada",
-      "name": "MACARONS{PINA COLADA}",
-      "description": "Piña colada macaron with white chocolate ganache and pineapple filling.",
-      "price": 350,
-      "category": "desserts",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "lemon-crinkle-cookies-250-gms",
-      "name": "LEMON CRINKLE COOKIES (250 gms)",
-      "description": "Eggless lemon crinkle cookies with real lemon zest and juice, dusted with icing sugar.",
-      "price": 400,
-      "category": "desserts",
-      "dietaryTags": [
-        "vegetarian"
-      ],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "chocolate-chip-cookies-container-250-gm",
-      "name": "Chocolate Chip Cookies (Container( 250 gm)",
-      "description": "Eggless cookies studded with premium couverture chocolate chips. Buttery, soft, and indulgent.",
-      "price": 400,
-      "category": "desserts",
-      "dietaryTags": [
-        "vegetarian"
-      ],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "brookies",
-      "name": "BROOKIES",
-      "description": "Eggless brownie-cookie hybrid. Fudgy, richly chocolatey, and irresistible.",
-      "price": 450,
-      "category": "desserts",
-      "dietaryTags": [
-        "vegetarian"
-      ],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "madeleines",
-      "name": "MADELEINES",
-      "description": "Classic French madeleine with egg, butter, and premium ingredients. Shell-shaped with white chocolate coating.",
-      "price": 250,
-      "category": "desserts",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "eclairs",
-      "name": "ECLAIRS",
-      "description": "Choux pastry with egg, filled with dark chocolate mousseline and glossy chocolate glaze.",
-      "price": 300,
-      "category": "desserts",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "tiramisu-tubs",
-      "name": "TIRAMISU TUBS",
-      "description": "House-made ladyfingers soaked in Karnataka espresso, layered with mascarpone and dusted with dark cocoa.",
-      "price": 420,
-      "category": "desserts",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "classic-tres-leches-tubs",
-      "name": "CLASSIC TRES LECHES TUBS",
-      "description": "Eggless vanilla sponge soaked in three milks. Soft, creamy, and delicate.",
-      "price": 400,
-      "category": "desserts",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "chocolate-tres-leches-tubs",
-      "name": "CHOCOLATE TRES LECHES TUBS",
-      "description": "Eggless chocolate sponge soaked in three milks with premium dark chocolate. Deeply indulgent.",
-      "price": 420,
-      "category": "desserts",
-      "dietaryTags": [
-        "vegetarian"
-      ],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "healthy-budha-bowl",
-      "name": "HEALTHY BUDHA BOWL",
-      "description": "Five-colour vegetable bowl with carrot, red cabbage, capsicum, paneer, and honey mustard herb dressing.",
-      "price": 450,
-      "category": "brunch",
-      "dietaryTags": [
-        "vegetarian"
-      ],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "high-protein-egg-white-omlettes",
-      "name": "HIGH PROTEIN EGG WHITE OMLETTES",
-      "description": "Fresh egg white omelette with vegetables and sprouts. High-protein, low-calorie, and nourishing.",
-      "price": 300,
-      "category": "brunch",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "whole-eggs-omlette-with-fresh-salad",
-      "name": "WHOLE EGGS OMLETTE WITH FRESH SALAD",
-      "description": "Fresh whole egg omelette with crisp salad and sprouts. Balanced and energising.",
-      "price": 300,
-      "category": "brunch",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "brioche-banana-toast",
-      "name": "BRIOCHE BANANA TOAST",
-      "description": "Golden brioche with caramelised banana, whipped cream, granola, and caramel sauce.",
-      "price": 380,
-      "category": "brunch",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "brioche-tiramisu-toast",
-      "name": "BRIOCHE TIRAMISU TOAST",
-      "description": "Buttery brioche soaked in espresso and custard, layered with mascarpone and coffee anglaise.",
-      "price": 420,
-      "category": "brunch",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "abc-power-booster",
-      "name": "ABC POWER BOOSTER",
-      "description": "Beetroot, apple, banana, carrot, and chia seeds. Rich in fibre and antioxidants. Supports energy, recovery, and skin health.",
-      "price": 400,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "golden-glow-smoothie",
-      "name": "GOLDEN GLOW SMOOTHIE",
-      "description": "Carrot, orange, and fresh turmeric. Rich in vitamin c, beta-carotene, and curcumin. Supports immunity and skin glow.",
-      "price": 400,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "tropical-green-revive",
-      "name": "TROPICAL GREEN REVIVE",
-      "description": "Fresh spinach and pineapple. Rich in chlorophyll and vitamin c. Light, nourishing, and energising.",
-      "price": 400,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "any-hot-beverage-with-one-macaron",
-      "name": "ANY HOT BEVERAGE WITH ONE MACARON",
-      "description": "",
-      "price": 400,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "any-one-savoury-dessert-any-one-beverage",
-      "name": "Any One Savoury / Dessert + Any One  Beverage",
-      "description": "",
-      "price": 700,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "any-one-savoury-one-beverage-one-dessert",
-      "name": "Any One Savoury +One Beverage + One Dessert",
-      "description": "",
-      "price": 1000,
-      "category": "drinks",
-      "dietaryTags": [],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "500-gms-against-order",
-      "name": "500 gms (against order)",
-      "description": "",
-      "price": 1000,
-      "category": "desserts",
-      "dietaryTags": [
-        "vegetarian"
-      ],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
-    },
-    {
-      "id": "1kg-against-order",
-      "name": "1kg (against order)",
-      "description": "",
-      "price": 2000,
-      "category": "desserts",
-      "dietaryTags": [
-        "vegetarian"
-      ],
-      "allergens": [],
-      "prepTime": "5 min",
-      "featured": false,
-      "localImage": null,
-      "unsplashImage": null
+      "unsplashImage": "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=800&auto=format&fit=crop&q=60"
     }
   ]
 }
